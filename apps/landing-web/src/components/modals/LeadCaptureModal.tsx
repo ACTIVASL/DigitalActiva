@@ -29,7 +29,7 @@ export const LeadCaptureModal = ({ initialInterest }: { initialInterest?: string
           _template: 'box',
           _captcha: 'false',
           _autoresponse:
-            '¡Gracias por contactar con Activa Musicoterapia! Hemos recibido tu solicitud.',
+            '¡Gracias por contactar con Activa S.L.! Hemos recibido tu solicitud.',
           // Spanish Data Labels
           'Nombre del Paciente': formData.name,
           'Email de Contacto': formData.email,

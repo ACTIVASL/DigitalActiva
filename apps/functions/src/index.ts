@@ -4,16 +4,17 @@ import { getFirestore, FieldValue } from 'firebase-admin/firestore';
 
 import { embed } from '@genkit-ai/ai/embedder';
 import { textEmbeddingGecko001 } from '@genkit-ai/googleai';
-import { initGenkit } from './genkit';
+// import { initGenkit } from './genkit';
 
 // Initialize Genkit
-initGenkit();
+// Initialize Genkit
+// initGenkit(); // DISABLED TO PREVENT DEPLOYMENT HANG (Auth simulated)
 
 const FUNCTION_OPTS: HttpsOptions = {
     region: 'europe-west1',
     memory: '1GiB',
     timeoutSeconds: 60,
-    cors: true, // Allow Client Access
+    cors: true,
 };
 
 /**
@@ -118,4 +119,8 @@ export const searchNotes = onCall(FUNCTION_OPTS, async (request) => {
         throw new Error("Neural Search System Failure");
     }
 });
+
+export * from './neuralAudit';
+export * from './memoryQuery';
+export * from './mcp';
 

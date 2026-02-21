@@ -23,7 +23,7 @@ export const BlogIndex = () => {
     return (
         <div className="bg-slate-950 min-h-screen font-sans text-slate-300 selection:bg-brand-primary selection:text-white">
             <Helmet>
-                <title>Blog | Activa Musicoterapia</title>
+                <title>Blog | Activa S.L.</title>
                 <meta name="description" content="Artículos sobre musicoterapia clínica, gestión sanitaria y tecnología para terapeutas." />
             </Helmet>
 

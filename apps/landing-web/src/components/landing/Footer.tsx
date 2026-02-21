@@ -1,5 +1,4 @@
-import { Twitter, Linkedin, Github } from 'lucide-react';
-import { Input } from '../ui/Input';
+import { Linkedin, Github, Mail } from 'lucide-react';
 
 export const Footer = () => {
     return (
@@ -11,8 +10,8 @@ export const Footer = () => {
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-20">
                     {/* BRAND COLUMN */}
                     <div className="md:col-span-5 space-y-8">
-                        <h2 className="text-2xl font-display font-black tracking-tight text-white flex items-center gap-2">
-                            <span className="w-8 h-8 bg-brand-primary rounded shadow-[0_0_15px_-3px_rgba(0,243,255,0.5)]"></span>
+                        <h2 className="text-2xl font-display font-black tracking-tight text-white flex items-center gap-3">
+                            <img src="/logo-v2.png" alt="ACTIVA SL Digital" className="w-10 h-10 rounded shadow-[0_0_15px_-3px_rgba(96,165,250,0.5)]" />
                             ACTIVA SL DIGITAL.
                         </h2>
                         <p className="text-slate-400 leading-relaxed max-w-sm">
@@ -20,14 +19,14 @@ export const Footer = () => {
                             <br />Código en propiedad. Sin deuda técnica.
                         </p>
                         <div className="flex gap-4">
-                            <a href="#" className="p-2 rounded-full bg-white/5 hover:bg-brand-primary hover:text-black transition-all">
+                            <a href="https://github.com/ACTIVASL" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-white/5 hover:bg-brand-primary hover:text-black transition-all" aria-label="GitHub">
+                                <Github size={20} />
+                            </a>
+                            <a href="https://www.linkedin.com/company/activa-sl-digital" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-white/5 hover:bg-brand-primary hover:text-black transition-all" aria-label="LinkedIn">
                                 <Linkedin size={20} />
                             </a>
-                            <a href="#" className="p-2 rounded-full bg-white/5 hover:bg-brand-primary hover:text-black transition-all">
-                                <Twitter size={20} />
-                            </a>
-                            <a href="#" className="p-2 rounded-full bg-white/5 hover:bg-brand-primary hover:text-black transition-all">
-                                <Github size={20} />
+                            <a href="mailto:contacto@activa-sl.digital" className="p-2 rounded-full bg-white/5 hover:bg-brand-primary hover:text-black transition-all" aria-label="Email">
+                                <Mail size={20} />
                             </a>
                         </div>
                     </div>
@@ -35,16 +34,15 @@ export const Footer = () => {
                     {/* NEWSLETTER & SITEMAP */}
                     <div className="md:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-8">
                         <div className="sm:col-span-3 lg:col-span-1">
-                            <h4 className="font-display font-bold text-lg mb-6 text-white">Newsletter</h4>
+                            <h4 className="font-display font-bold text-lg mb-6 text-white">Contacto</h4>
                             <div className="space-y-4">
-                                <p className="text-sm text-slate-400">Recibe tendencias de Ingeniería Digital.</p>
-                                <div className="flex flex-col gap-2">
-
-                                    <Input label="Email Corporativo" placeholder="ceo@empresa.com" />
-                                    <button className="w-full py-2 bg-brand-primary/10 border border-brand-primary/50 text-brand-primary text-xs font-bold uppercase tracking-widest hover:bg-brand-primary hover:text-black transition-all rounded-lg">
-                                        Suscribirse
-                                    </button>
-                                </div>
+                                <p className="text-sm text-slate-400">¿Listo para escalar tu negocio con tecnología propia?</p>
+                                <a
+                                    href="mailto:contacto@activa-sl.digital?subject=Consulta%20desde%20web"
+                                    className="block w-full py-3 bg-brand-primary/10 border border-brand-primary/50 text-brand-primary text-xs font-bold uppercase tracking-widest hover:bg-brand-primary hover:text-black transition-all rounded-lg text-center"
+                                >
+                                    Solicitar Reunión
+                                </a>
                             </div>
                         </div>
 

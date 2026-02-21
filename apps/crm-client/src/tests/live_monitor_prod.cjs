@@ -2,7 +2,7 @@ const { chromium } = require('@playwright/test');
 
 (async () => {
     console.log('--- 🟢 PRODUCTION MONITOR STARTED ---');
-    console.log('--- TARGET: https://app-activamusicoterapia.firebaseapp.com ---');
+    console.log('--- TARGET: https://activa-sl-digital.web.app ---');
     console.log('--- INSTRUCTION: Log in if needed. Perform the "Save Session" test. ---');
 
     // Force Environment
@@ -52,7 +52,7 @@ const { chromium } = require('@playwright/test');
     console.log('--- WAITING FOR DEPLOYMENT TO FINISH... ---');
 
     try {
-        await page.goto('https://app-activamusicoterapia.firebaseapp.com/dashboard');
+        await page.goto('https://activa-sl-digital.web.app/dashboard');
         console.log('[✅ NAV] Loaded Production Dashboard');
     } catch (e) {
         console.log(`[❌ NAV FAIL] ${e.message}`);

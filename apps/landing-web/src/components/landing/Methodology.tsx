@@ -31,7 +31,7 @@ const Methodology = ({ onOpenModal }: { onOpenModal: (type: string) => void }) =
       icon: MonitorPlay,
       title: 'Soporte Vitalicio',
       description:
-        'No te abandonamos tras el entrega. Mantenimiento evolutivo, seguridad 24/7 y monitorización proactiva.',
+        'No te abandonamos tras la entrega. Mantenimiento evolutivo, seguridad continua y monitorización proactiva de tu infraestructura.',
       color: 'text-white',
       glowHex: '#ffffff',
       glow: 'group-hover:shadow-[0_0_40px_-5px_rgba(255,255,255,0.5)]',
@@ -42,7 +42,7 @@ const Methodology = ({ onOpenModal }: { onOpenModal: (type: string) => void }) =
   ];
 
   return (
-    <section className="relative py-24 bg-brand-dark overflow-hidden">
+    <section className="relative py-24 bg-brand-dark overflow-hidden" aria-label="Metodología de trabajo">
       {/* Ambient Background Glows */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div className="absolute top-[20%] right-[10%] w-[500px] h-[500px] bg-brand-primary/10 rounded-full blur-[120px] animate-pulse-slow"></div>
@@ -53,16 +53,16 @@ const Methodology = ({ onOpenModal }: { onOpenModal: (type: string) => void }) =
         {/* Header */}
         <div className="text-center mb-16 max-w-3xl mx-auto">
           <h2 className="text-sm font-display font-bold text-brand-primary tracking-[0.2em] uppercase mb-4">
-            PROTOCOLO DE DESPLIEGUE A2A
+            MÉTODO DE TRABAJO
           </h2>
           <h3 className="text-4xl md:text-5xl font-display font-bold text-white mb-6 leading-tight">
-            De la "Gestión" a la <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-              Orquestación de Agentes
+            De la Idea al <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-white">
+              Software en Producción
             </span>
           </h3>
           <p className="text-lg text-slate-400 font-body font-light leading-relaxed">
-            No instalamos software. Entrenamos a tu "Ejército Digital" (Gemini + NotebookLM) para que operen tu empresa bajo tu supervisión.
+            Tres pilares que garantizan que tu proyecto se entrega a tiempo, dentro de presupuesto y con calidad de producción desde el día uno.
           </p>
         </div>
 

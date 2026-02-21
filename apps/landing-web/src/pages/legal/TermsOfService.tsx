@@ -6,7 +6,7 @@ export const TermsOfService = () => {
   return (
     <div className="bg-[#020617] min-h-screen text-slate-300 font-['Inter']">
       <Helmet>
-        <title>Términos y Condiciones | Activa Musicoterapia</title>
+        <title>Términos y Condiciones | Activa S.L.</title>
         <meta name="robots" content="noindex" />
       </Helmet>
       <Navigation />
@@ -19,7 +19,7 @@ export const TermsOfService = () => {
 
           <h3>1. Naturaleza del Servicio</h3>
           <p>
-            Activa Musicoterapia ofrece servicios de rehabilitación neurológica y terapia musical
+            Activa S.L. ofrece servicios de rehabilitación neurológica y terapia musical
             basada en evidencia científica. Los resultados pueden variar según el paciente y la
             patología.
           </p>

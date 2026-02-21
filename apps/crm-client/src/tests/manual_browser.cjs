@@ -23,8 +23,8 @@ const path = require('path');
     page.on('console', msg => console.log(`[BROWSER CONSOLE] ${msg.type()}: ${msg.text()}`));
     page.on('pageerror', err => console.log(`[BROWSER ERROR]: ${err}`));
 
-    console.log('Navigating to PRODUCTION: https://app-activamusicoterapia.firebaseapp.com/...');
-    await page.goto('https://app-activamusicoterapia.firebaseapp.com/');
+    console.log('Navigating to PRODUCTION: https://activa-sl-digital.web.app/...');
+    await page.goto('https://activa-sl-digital.web.app/');
 
     // Wait for React to mount
     await page.waitForTimeout(3000);

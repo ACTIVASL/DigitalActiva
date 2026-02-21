@@ -15,14 +15,14 @@ export const BenefitsPost = () => {
     image: 'https://activa-sl-digital.web.app/assets/blog-musicoterapia.jpg', // Placeholder
     author: {
       '@type': 'Organization',
-      name: 'Activa Musicoterapia',
+      name: 'Activa S.L.',
     },
     publisher: {
       '@type': 'Organization',
-      name: 'Activa Musicoterapia',
+      name: 'Activa S.L.',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://webycrm-activa.web.app/logo-premium.png',
+        url: 'https://activa-sl-digital.web.app/logo-premium.png',
       },
     },
     datePublished: '2021-06-04',

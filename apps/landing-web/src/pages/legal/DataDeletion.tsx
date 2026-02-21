@@ -6,7 +6,7 @@ export const DataDeletion = () => {
   return (
     <div className="bg-[#020617] min-h-screen text-slate-300 font-['Inter']">
       <Helmet>
-        <title>Solicitud de Eliminación de Datos | Activa Musicoterapia</title>
+        <title>Solicitud de Eliminación de Datos | Activa S.L.</title>
         <meta name="robots" content="noindex" />
       </Helmet>
       <Navigation />

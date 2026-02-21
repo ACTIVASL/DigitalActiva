@@ -5,7 +5,7 @@ import { SeoHead } from '../../components/shared/SeoHead';
 export const Privacy = () => {
   return (
     <>
-      <SeoHead title="Política de Privacidad | Activa Musicoterapia" />
+      <SeoHead title="Política de Privacidad | Activa S.L." />
       <Navigation />
       <main className="pt-32 pb-20 px-6 max-w-4xl mx-auto font-sans">
         <h1 className="text-4xl font-display font-bold mb-8 text-brand-dark">

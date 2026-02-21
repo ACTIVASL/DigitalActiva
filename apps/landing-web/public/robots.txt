@@ -12,4 +12,17 @@ Allow: /
 User-agent: CCBot
 Allow: /
 
-Sitemap: https://activa-sl.digital/sitemap.xml
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+Sitemap: https://activa-sl-digital.web.app/sitemap.xml
+
+# LLMs.txt: AI Agent Discovery Protocol
+# https://llmstxt.org
+# See: https://activa-sl-digital.web.app/llms.txt

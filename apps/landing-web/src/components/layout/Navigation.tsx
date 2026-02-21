@@ -36,7 +36,16 @@ export const Navigation = () => {
 
   return (
     <header>
+      {/* Skip to Content - Accessibility */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-6 focus:py-3 focus:bg-brand-primary focus:text-white focus:rounded-full focus:font-bold focus:shadow-lg"
+      >
+        Saltar al contenido principal
+      </a>
       <nav
+        role="navigation"
+        aria-label="Menú principal"
         className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${isScrolled
           ? 'bg-slate-900/95 backdrop-blur-md shadow-lg border-b border-white/5 py-4'
           : 'bg-slate-900/90 backdrop-blur-xl border-b border-white/5 shadow-lg shadow-black/5 py-6'
@@ -107,7 +116,9 @@ export const Navigation = () => {
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="lg:hidden p-3 text-white bg-white/10 border border-slate-700 rounded-full hover:bg-white/20 transition-colors"
-                aria-label="Toggle menu"
+                aria-label={isMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
+                aria-expanded={isMenuOpen}
+                aria-controls="mobile-menu"
               >
                 {isMenuOpen ? <X /> : <Menu />}
               </button>
@@ -115,48 +126,73 @@ export const Navigation = () => {
           </div>
         </div>
 
-        {/* Mobile Menu Dropdown - Corporate Dark */}
-        {isMenuOpen && (
-          <div className="lg:hidden absolute top-[80px] left-0 w-full h-[calc(100vh-80px)] bg-slate-950/95 backdrop-blur-xl border-t border-slate-800 z-50 overflow-y-auto">
-            <div className="px-6 pt-10 pb-12 space-y-8">
-              {/* Mobile Links */}
-              <div className="space-y-6">
-                {menuItems.map((item) => (
-                  item.href.startsWith('#') || item.href.includes('#') ? (
-                    <a
-                      key={item.label}
-                      href={item.href}
-                      onClick={() => setIsMenuOpen(false)}
-                      className="block text-2xl font-display font-medium text-slate-300 hover:text-brand-primary transition-colors"
-                    >
-                      {item.label}
-                    </a>
-                  ) : (
-                    <Link
-                      key={item.label}
-                      to={item.href}
-                      onClick={() => setIsMenuOpen(false)}
-                      className="block text-2xl font-display font-medium text-slate-300 hover:text-brand-primary transition-colors"
-                    >
-                      {item.label}
-                    </Link>
-                  )
-                ))}
-              </div>
+        {/* Mobile Menu Dropdown - Corporate Dark PREMIUM */}
+        <div
+          id="mobile-menu"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Menú de navegación"
+          className={`lg:hidden fixed top-0 left-0 w-full h-screen bg-slate-950/95 backdrop-blur-2xl z-40 transition-all duration-500 ease-in-out ${isMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[-100%] pointer-events-none'
+            }`}
+          style={{ paddingTop: '80px' }}
+        >
+          {/* Subtle Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-brand-primary/5 to-transparent pointer-events-none"></div>
 
-              {/* Mobile Actions */}
-              <div className="pt-8 border-t border-slate-800 space-y-4">
-                <a
-                  href={CRM_URL}
-                  className="flex items-center justify-center gap-3 w-full py-4 rounded-xl bg-slate-900 border border-brand-primary/50 text-white font-bold uppercase tracking-wider shadow-[0_0_20px_-5px_rgba(96,165,250,0.5)] hover:shadow-[0_0_30px_-5px_rgba(96,165,250,0.8)] hover:border-brand-primary transition-all"
-                >
-                  <UserPlus className="w-5 h-5" />
-                  INICIAR SESIÓN
-                </a>
+          <div className="relative h-full overflow-y-auto px-6 pt-8 pb-12 flex flex-col">
+            {/* Mobile Links with Staggered Entrance */}
+            <div className="flex-1 space-y-8 flex flex-col justify-center min-h-[50vh]">
+              {menuItems.map((item, index) => {
+                // Stagger Logic: 100ms delay per item
+                const delay = `${index * 100}ms`;
+                return (
+                  <div
+                    key={item.label}
+                    className={`transform transition-all duration-700 ease-out ${isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+                      }`}
+                    style={{ transitionDelay: isMenuOpen ? delay : '0ms' }}
+                  >
+                    {item.href.startsWith('#') || item.href.includes('#') ? (
+                      <a
+                        href={item.href}
+                        onClick={() => setIsMenuOpen(false)}
+                        className="block text-4xl sm:text-5xl font-display font-thin tracking-tight text-white/80 hover:text-white hover:pl-4 transition-all duration-300 border-l-2 border-transparent hover:border-brand-primary"
+                      >
+                        {item.label}
+                      </a>
+                    ) : (
+                      <Link
+                        to={item.href}
+                        onClick={() => setIsMenuOpen(false)}
+                        className="block text-4xl sm:text-5xl font-display font-thin tracking-tight text-white/80 hover:text-white hover:pl-4 transition-all duration-300 border-l-2 border-transparent hover:border-brand-primary"
+                      >
+                        {item.label}
+                      </Link>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Mobile Actions with Fade In */}
+            <div
+              className={`pt-8 border-t border-white/10 space-y-6 transform transition-all duration-1000 delay-500 ${isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+                }`}
+            >
+              <a
+                href={CRM_URL}
+                className="flex items-center justify-center gap-3 w-full py-5 rounded-full bg-white text-slate-950 font-bold uppercase tracking-widest hover:bg-slate-200 transition-colors shadow-lg shadow-white/10"
+              >
+                <UserPlus className="w-5 h-5" />
+                ACCESO CLIENTES
+              </a>
+
+              <div className="text-center">
+                <p className="text-slate-500 text-xs uppercase tracking-[0.2em]">Activa S.L. Digital Engineering</p>
               </div>
             </div>
           </div>
-        )}
+        </div>
       </nav>
     </header>
   );

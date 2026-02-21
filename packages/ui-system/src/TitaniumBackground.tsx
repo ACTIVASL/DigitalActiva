@@ -1,8 +1,10 @@
 import { useEffect, useRef } from 'react';
 import { Particle } from './lib/Particle';
+import { useIsMobile } from './hooks/useIsMobile';
 
 export const TitaniumBackground = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const { isMobile, isTablet } = useIsMobile();
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -24,7 +26,13 @@ export const TitaniumBackground = () => {
         setSize();
         window.addEventListener('resize', setSize);
 
-        const PARTICLE_COUNT = Math.floor((width * height) / 15000); // Density control
+        // TITANIUM OPTIMIZATION: Graduated Density for Omnichannel Performance
+        let particleDensity = 15000; // Desktop (Master Race)
+        if (isTablet) particleDensity = 25000; // iPad Pro (High End)
+        if (isMobile) particleDensity = 45000; // Mobile (Efficiency)
+
+        const PARTICLE_COUNT = Math.floor((width * height) / particleDensity);
+
         const particles: Particle[] = [];
 
         for (let i = 0; i < PARTICLE_COUNT; i++) {
@@ -32,6 +40,8 @@ export const TitaniumBackground = () => {
         }
 
         // ANIMATION LOOP
+        let animationFrameId: number;
+
         const animate = () => {
             // Slight trails for "Screen" feel
             ctx.fillStyle = 'rgba(10, 10, 10, 0.2)'; // Brand Dark with alpha
@@ -59,41 +69,49 @@ export const TitaniumBackground = () => {
             }
 
             // Draw connections between aligned nodes (The Circuit)
-            ctx.beginPath();
-            ctx.strokeStyle = 'rgba(0, 243, 255, 0.05)';
-            ctx.lineWidth = 1;
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
+            // TITANIUM OPTIMIZATION: Disable complex connections on mobile
+            // PERF: Early-exit on dx + max connections per particle
+            if (!isMobile) {
+                ctx.beginPath();
+                ctx.strokeStyle = 'rgba(0, 243, 255, 0.05)';
+                ctx.lineWidth = 1;
+                const MAX_CONNECTIONS = 3;
+                for (let i = 0; i < particles.length; i++) {
+                    let connections = 0;
                     const p1 = particles[i];
-                    const p2 = particles[j];
-
-                    const SameX = Math.abs(p1.x - p2.x) < 1;
-                    const SameY = Math.abs(p1.y - p2.y) < 1;
-                    const dist = Math.abs(p1.x - p2.x) + Math.abs(p1.y - p2.y);
-
-                    if ((SameX || SameY) && dist < 300) {
-                        ctx.moveTo(p1.x, p1.y);
-                        ctx.lineTo(p2.x, p2.y);
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const p2 = particles[j];
+                        const dx = Math.abs(p1.x - p2.x);
+                        if (dx > 300) continue; // Early exit: no point checking further
+                        const dy = Math.abs(p1.y - p2.y);
+                        if (dx > 1 && dy > 1) continue; // Not aligned
+                        if (dx + dy < 300) {
+                            ctx.moveTo(p1.x, p1.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            connections++;
+                            if (connections >= MAX_CONNECTIONS) break;
+                        }
                     }
                 }
+                ctx.stroke();
             }
-            ctx.stroke();
 
-            requestAnimationFrame(animate);
+            animationFrameId = requestAnimationFrame(animate);
         };
 
         animate();
 
         return () => {
             window.removeEventListener('resize', setSize);
+            cancelAnimationFrame(animationFrameId);
         };
-    }, []);
+    }, [isMobile, isTablet]); // Re-run if mobile state changes (e.g. rotation)
 
     return (
         <canvas
             ref={canvasRef}
             className="absolute inset-0 w-full h-full pointer-events-none"
-            style={{ mixBlendMode: 'screen', opacity: 0.8 }}
+            style={{ mixBlendMode: 'screen', opacity: isMobile ? 0.6 : 0.8 }}
         />
     );
 };

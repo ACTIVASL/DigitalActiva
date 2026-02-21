@@ -1,10 +1,7 @@
 import { ArrowRight, MonitorPlay, GraduationCap, Sparkles } from 'lucide-react';
 
-import academyInterface from '../../assets/images/academy_campus_interface.png';
-import crmDesktop from '../../assets/images/crm-dashboard-sme.png';
-import crmTablet from '../../assets/images/crm-dashboard-sme.png';
-import crmMobile from '../../assets/images/crm-dashboard-sme.png';
-// import { RevealSection } from '../ui/RevealSection'; // Unused
+import academyInterface from '../../assets/images/academy_campus_interface.webp';
+import crmScreenshot from '../../assets/images/crm-dashboard-sme.webp';
 
 interface ProfessionalsProps {
   onOpenModal?: (modal: string, data?: unknown) => void;
@@ -13,7 +10,7 @@ interface ProfessionalsProps {
 
 export const Professionals = ({ onOpenModal }: ProfessionalsProps) => {
   return (
-    <section className="relative bg-white overflow-hidden">
+    <section className="relative bg-white overflow-hidden" aria-label="Ecosistema corporativo">
       {/* Ambient Background - Shared (Subtle Light) */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
         <div className="absolute top-[10%] left-[5%] w-[800px] h-[800px] bg-brand-primary/5 rounded-full blur-[150px] animate-pulse-slow"></div>
@@ -41,7 +38,7 @@ export const Professionals = ({ onOpenModal }: ProfessionalsProps) => {
       <div
         className="relative py-32 border-t border-gray-100 bg-slate-50"
         id="software"
-        data-version="titanium-v5-refresh"
+
       >
         <div className="max-w-[1440px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Content */}
@@ -79,7 +76,7 @@ export const Professionals = ({ onOpenModal }: ProfessionalsProps) => {
 
             <div className="flex flex-wrap gap-4 pt-4">
               <a
-                href="#contacto"
+                href="mailto:contacto@activa-sl.digital?subject=Solicitud%20Demo%20CRM"
                 className="px-8 py-4 bg-slate-900 border border-brand-primary/50 text-white rounded-full font-bold tracking-wide shadow-[0_0_20px_-5px_rgba(96,165,250,0.5)] hover:shadow-[0_0_30px_-5px_rgba(96,165,250,0.8)] hover:border-brand-primary hover:bg-slate-800 transition-all transform active:scale-95 duration-200 inline-flex items-center justify-center"
               >
                 SOLICITAR DEMO
@@ -94,52 +91,48 @@ export const Professionals = ({ onOpenModal }: ProfessionalsProps) => {
           </div>
 
           {/* Visual: Device Composition (Clean Outline) */}
-          <div className="relative z-10 w-full lg:h-[800px] flex items-center justify-center perspective-container py-20 lg:py-0">
+          {/* TITANIUM: Scale down on mobile to prevent overflow of absolute elements */}
+          {/* TITANIUM V5: RESPONSIVE DEVICE LAYOUT STRATEGY */}
+
+          {/* A) DESKTOP & TABLET LANDSCAPE: ORIGINAL COMPOSITION (Hidden on Mobile) */}
+          <div className="hidden lg:flex relative z-10 w-full lg:h-[800px] items-center justify-center perspective-container">
             {/* DESKTOP (Back Center) */}
-            <div className="relative w-[90%] lg:w-[800px] aspect-[16/10] bg-white rounded-xl shadow-2xl shadow-slate-200 border-[6px] border-slate-800 ring-1 ring-gray-200 z-10 transition-transform duration-700 hover:scale-[1.01] overflow-hidden group/desktop">
-              {/* Screen */}
+            <div className="relative w-[800px] aspect-[16/10] bg-white rounded-xl shadow-2xl shadow-slate-200 border-[6px] border-slate-800 ring-1 ring-gray-200 z-10 transition-transform duration-700 hover:scale-[1.01] overflow-hidden group/desktop">
               <div className="w-full h-full bg-slate-100 overflow-hidden relative">
-                <img
-                  src={crmDesktop}
-                  alt="Panel de Control CRM Empresarial"
-                  className="w-full h-full object-cover object-top bg-white"
-                  loading="lazy"
-                  decoding="async"
-                />
+                <img src={crmScreenshot} alt="Dashboard CRM" className="w-full h-full object-cover object-top" loading="lazy" />
               </div>
-              {/* Stand */}
               <div className="absolute left-1/2 -bottom-6 w-1/3 h-4 bg-gradient-to-b from-slate-700 to-slate-900 -translate-x-1/2 rounded-b-xl"></div>
             </div>
-            {/* TABLET (Bottom Right Overlap) */}
-            <div
-              className="absolute -bottom-10 right-0 lg:-right-12 lg:bottom-20 w-[60%] lg:w-[450px] aspect-[4/3] bg-white rounded-[1.5rem] shadow-xl border-[8px] border-slate-800 ring-1 ring-gray-200 z-20 animate-float"
-              style={{ animationDelay: '1s' }}
-            >
-              <div className="w-full h-full bg-slate-100 rounded-2xl overflow-hidden relative group/tablet">
-                <img
-                  src={crmTablet}
-                  alt="Gestión en Tablet para Ejecutivos"
-                  className="w-full h-full object-cover object-top bg-white"
-                  loading="lazy"
-                />
-              </div>
-              {/* Camera Dot */}
+
+            {/* TABLET (Bottom Right) */}
+            <div className="absolute -right-12 bottom-20 w-[450px] aspect-[4/3] bg-white rounded-[1.5rem] shadow-xl border-[8px] border-slate-800 ring-1 ring-gray-200 z-20 animate-float" style={{ animationDelay: '1s' }}>
+              <div className="w-full h-full bg-slate-100 rounded-2xl overflow-hidden relative"><img src={crmScreenshot} alt="Tablet CRM" className="w-full h-full object-cover object-top" loading="lazy" /></div>
               <div className="absolute top-1/2 -right-1.5 w-1 h-8 bg-gray-400 rounded-l-md -translate-y-1/2"></div>
             </div>
-            {/* MOBILE (Bottom Left Overlap) */}
-            <div
-              className="absolute -bottom-20 left-4 lg:left-0 lg:bottom-40 w-[35%] lg:w-[240px] aspect-[9/19.5] bg-black rounded-[2.5rem] shadow-xl border-[8px] border-black ring-1 ring-gray-800 z-30 animate-float"
-              style={{ animationDelay: '0s' }}
-            >
-              <div className="w-full h-full bg-white rounded-[2rem] overflow-hidden relative group/mobile">
-                <img
-                  src={crmMobile}
-                  alt="App Móvil PWA Corporativa"
-                  className="w-full h-full object-cover object-top bg-white"
-                  loading="lazy"
-                />
-                {/* Dynamic Notch/Bar */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-5 bg-black rounded-b-xl z-40"></div>
+
+            {/* MOBILE (Bottom Left) */}
+            <div className="absolute left-0 bottom-40 w-[240px] aspect-[9/19.5] bg-black rounded-[2.5rem] shadow-xl border-[8px] border-black ring-1 ring-gray-800 z-30 animate-float" style={{ animationDelay: '0s' }}>
+              <div className="w-full h-full bg-white rounded-[2rem] overflow-hidden relative"><img src={crmScreenshot} alt="Mobile CRM" className="w-full h-full object-cover object-top" loading="lazy" /><div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-5 bg-black rounded-b-xl z-40"></div></div>
+            </div>
+          </div>
+
+          {/* B) MOBILE & TABLET PORTRAIT: VERTICAL STACK (Visible only on small screens) */}
+          <div className="lg:hidden relative w-full pt-10 pb-20 flex flex-col items-center gap-8">
+
+            {/* 1. Desktop Device (Top, Full Width) */}
+            <div className="relative w-full shadow-xl rounded-xl overflow-hidden border-[4px] border-slate-800">
+              <img src={crmScreenshot} alt="CRM Desktop View" className="w-full h-auto object-cover" loading="lazy" />
+            </div>
+
+            <div className="flex items-end justify-center gap-4 -mt-12 z-20 w-full px-4">
+              {/* 2. Tablet (Left, Tucked In) */}
+              <div className="w-2/3 shadow-2xl rounded-xl overflow-hidden border-[4px] border-slate-800 transform -rotate-2 bg-white">
+                <img src={crmScreenshot} alt="CRM Tablet View" className="w-full h-auto" loading="lazy" />
+              </div>
+
+              {/* 3. Mobile (Right, Overlay) */}
+              <div className="w-1/3 shadow-2xl rounded-[1.5rem] overflow-hidden border-[4px] border-black bg-black transform rotate-3 translate-y-8">
+                <img src={crmScreenshot} alt="CRM Mobile View" className="w-full h-auto rounded-[1.2rem]" loading="lazy" />
               </div>
             </div>
           </div>
@@ -156,7 +149,7 @@ export const Professionals = ({ onOpenModal }: ProfessionalsProps) => {
               <img
                 src={academyInterface}
                 alt="Interfaz de Formación Tecnológica"
-                className="w-full h-full object-contain relative z-10 drop-shadow-2xl"
+                className="w-full h-full object-contain relative z-10 drop-shadow-2xl transition-all duration-500 hover:drop-shadow-[0_20px_50px_rgba(59,130,246,0.4)]"
               />
             </div>
           </div>

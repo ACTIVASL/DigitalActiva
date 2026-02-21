@@ -7,7 +7,6 @@ import {
   persistentMultipleTabManager,
 } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
-import { getPerformance } from 'firebase/performance'; // TITANIUM OBSERVABILITY
 import { getFunctions } from 'firebase/functions'; // TITANIUM AI
 
 // --- CONFIGURACIÓN FIREBASE ---
@@ -27,9 +26,8 @@ const firebaseConfig = defaultConfig;
 
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-export const storage = getStorage(app); // EXPORT STORAGE
-export const perf = getPerformance(app); // EXPORT PERFORMANCE
-export const functions = getFunctions(app, 'europe-west1'); // EXPORT FUNCTIONS (Region: europe-west1)
+export const storage = getStorage(app);
+export const functions = getFunctions(app, 'europe-west1');
 
 // Initialize Firestore with modern persistence settings
 export const db = initializeFirestore(app, {

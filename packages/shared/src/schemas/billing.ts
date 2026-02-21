@@ -13,6 +13,7 @@ export const InvoiceItemSchema = z.object({
 
 export const InvoiceSchema = z.object({
   id: z.string(),
+  userId: z.string(), // Owner for Firestore security rules
   number: z.string(), // Sequence number like "INV-2024-001"
   date: z.string(), // ISO Date
   dueDate: z.string().optional(),

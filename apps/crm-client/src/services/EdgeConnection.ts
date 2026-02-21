@@ -27,6 +27,7 @@ type SignalCallback = (signal: SystemSignal) => void;
 
 class EdgeConnectionService {
     private subscribers: SignalCallback[] = [];
+    private pulseInterval: ReturnType<typeof setInterval> | null = null;
 
     constructor() {
         this.initializeConnection();
@@ -51,6 +52,11 @@ class EdgeConnectionService {
         this.subscribers.push(callback);
         return () => {
             this.subscribers = this.subscribers.filter(cb => cb !== callback);
+            // Cleanup interval if no more subscribers
+            if (this.subscribers.length === 0 && this.pulseInterval) {
+                clearInterval(this.pulseInterval);
+                this.pulseInterval = null;
+            }
         };
     }
 
@@ -71,7 +77,7 @@ class EdgeConnectionService {
             { source: 'Drive', message: 'Actualizando hoja de cálculo maestra...', type: 'normal' },
         ];
 
-        setInterval(() => {
+        this.pulseInterval = setInterval(() => {
             // Random heartbeat
             if (Math.random() > 0.6) {
                 const event = events[Math.floor(Math.random() * events.length)];

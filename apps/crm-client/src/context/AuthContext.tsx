@@ -18,6 +18,8 @@ interface AuthContextType {
 }
 
 import { User } from 'firebase/auth';
+import { doc, onSnapshot } from 'firebase/firestore';
+import { db } from '@monorepo/engine-auth';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -26,15 +28,27 @@ import { useFirebaseAuthState } from '@monorepo/engine-auth';
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const auth = useFirebaseAuthState();
 
-  // Map Firebase Auth state to Context shape
-  // Role State (Simulated for Dev Mode)
-  const [role, setRole] = React.useState<UserRole>('admin');
+  // Role from Firestore user profile (default: therapist)
+  const [role, setRole] = React.useState<UserRole>('therapist');
+
+  // Fetch role from Firestore when user changes
+  React.useEffect(() => {
+    if (!auth.user) {
+      setRole('therapist');
+      return;
+    }
+    const unsub = onSnapshot(doc(db, 'users', auth.user.uid), (snap) => {
+      const data = snap.data();
+      const userRole = data?.role as UserRole | undefined;
+      setRole(userRole === 'admin' ? 'admin' : 'therapist');
+    });
+    return unsub;
+  }, [auth.user]);
 
   const isAuthenticated = !!auth.user;
   const isPremium = auth.isPremium;
   const subscriptionStatus = isPremium ? 'premium' : 'free';
 
-  // Role Switching Logic
   const login = (newRole: UserRole) => {
     setRole(newRole);
   };
@@ -44,8 +58,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const upgradeToPremium = () => {
-    // In real app, this should redirect to payment
-    // In real app, this should redirect to payment
+    // In production, redirect to Stripe/payment flow
   };
 
   // RBAC LOGIC

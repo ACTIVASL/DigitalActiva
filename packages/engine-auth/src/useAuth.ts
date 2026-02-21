@@ -13,7 +13,7 @@ import {
 } from 'firebase/auth';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { auth, db } from './firebase';
-// import { useActivityLog } from '../hooks/useActivityLog'; // TEMPORARILY DISABLED TO BREAK DEPENDENCY LOOP
+
 
 export function useFirebaseAuthState() {
   const [user, setUser] = useState<User | null>(null);
@@ -32,14 +32,7 @@ export function useFirebaseAuthState() {
       if (currentUser) {
         setError(null);
 
-        // FOUNDER OVERRIDE: Always premium for admin
-        if (currentUser.email === 'admin@activa-sl.digital') {
-          setIsPremium(true);
-          setLoading(false);
-          return;
-        }
-
-        // Real Firestore Listener for Customers
+        // Premium status from Firestore profile or Custom Claims
         unsubscribeProfile = onSnapshot(
           doc(db, 'users', currentUser.uid),
           (docSnapshot) => {

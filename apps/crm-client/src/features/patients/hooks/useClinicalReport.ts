@@ -30,7 +30,7 @@ export const useClinicalReport = () => {
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(22);
       doc.setTextColor(236, 0, 140); // Activa Pink
-      doc.text('ACTIVA MUSICOTERAPIA', 50, 20);
+      doc.text('ACTIVA S.L.', 50, 20);
 
       doc.setFontSize(10);
       doc.setTextColor(100);

@@ -138,7 +138,7 @@ export const CognitiveScoresSchema = z
       })
       .optional(),
     functionalScores: z.array(z.number()).optional(),
-    childProfile: z.record(z.string(), z.any()).optional(),
+    childProfile: z.record(z.string(), z.unknown()).optional(),
     childObs: z.string().optional(),
   })
   .catchall(z.unknown());

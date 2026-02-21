@@ -6,7 +6,7 @@ export const PrivacyPolicy = () => {
   return (
     <div className="bg-[#020617] min-h-screen text-slate-300 font-['Inter']">
       <Helmet>
-        <title>Aviso de Privacidad | Activa Musicoterapia</title>
+        <title>Aviso de Privacidad | Activa S.L.</title>
         <meta name="robots" content="noindex" />
       </Helmet>
       <Navigation />
@@ -17,7 +17,7 @@ export const PrivacyPolicy = () => {
           <p>
             En cumplimiento con el Reglamento General de Protección de Datos (RGPD) y la normativa
             sanitaria vigente,
-            <strong>Activa Musicoterapia</strong> informa sobre el tratamiento de datos personales.
+            <strong>Activa S.L.</strong> informa sobre el tratamiento de datos personales.
           </p>
           <h3>1. Responsable del Tratamiento</h3>
           <p>Método Activa S.L. - Madrid, España.</p>

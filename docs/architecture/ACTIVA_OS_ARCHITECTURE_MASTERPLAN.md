@@ -47,7 +47,7 @@ Aquí es donde ocurre la magia. Definiremos un archivo JSON (Texto plano) que de
 **Ejemplo de ADN para Musicoterapia:**
 ```json
 {
-  "company_name": "Activa Musicoterapia",
+  "company_name": "Activa S.L.",
   "primary_color": "#blue",
   "departments": [
     { "id": "ops", "name": "Operaciones Clínicas", "icon": "Stethoscope" },

@@ -1,4 +1,4 @@
-// import { RevealSection } from '../ui/RevealSection'; // Unused
+import { Helmet } from 'react-helmet-async';
 
 const faqs = [
   {
@@ -10,6 +10,16 @@ const faqs = [
     question: '¿El CRM y los datos son realmente míos?',
     answer:
       'SÍ. A diferencia de SaaS alquilados donde tus datos están secuestrados, nosotros te entregamos la soberanía total. Base de datos propia bajo tu control legal y técnico.',
+  },
+  {
+    question: '¿Cuánto cuesta un proyecto?',
+    answer:
+      'Modelo por proyecto, no suscripción. Auditoría técnica desde €5.000. Desarrollo de plataformas desde €15.000. Cada presupuesto es cerrado con hitos de entrega garantizados. El software resultante es un activo de tu empresa, no un alquiler.',
+  },
+  {
+    question: '¿Cuánto tarda un proyecto?',
+    answer:
+      'Depende de la complejidad: una web high-performance se entrega en 4-6 semanas. Un CRM completo personalizado entre 8-12 semanas. Siempre con hitos quincenales donde ves avances reales en producción.',
   },
   {
     question: '¿Qué mantenimiento requiere la tecnología?',
@@ -28,9 +38,28 @@ const faqs = [
   },
 ];
 
+// Auto-generate FAQPage JSON-LD schema from faqs array
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.answer,
+    },
+  })),
+};
+
 export const FAQ = () => {
   return (
-    <section id="faq" className="py-24 bg-gradient-to-b from-blue-950 to-slate-900 relative overflow-hidden">
+    <section id="faq" aria-label="Preguntas frecuentes" className="py-24 bg-gradient-to-b from-blue-950 to-slate-900 relative overflow-hidden">
+      {/* FAQPage Schema for Google Rich Snippets */}
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+      </Helmet>
+
       <div className="absolute top-0 left-0 w-full h-px bg-white/5"></div>
 
       <div className="max-w-4xl mx-auto px-6 relative z-10">
@@ -51,7 +80,7 @@ export const FAQ = () => {
             >
               <summary className="flex items-center justify-between p-6 cursor-pointer list-none font-display font-bold text-white text-lg select-none">
                 {faq.question}
-                <span className="transform transition-transform duration-300 group-open:rotate-180 bg-white/10 p-2 rounded-full shadow-sm text-brand-primary">
+                <span className="transform transition-transform duration-300 group-open:rotate-180 bg-white/10 p-2 rounded-full shadow-sm text-brand-primary flex-shrink-0 ml-4">
                   <svg
                     width="20"
                     height="20"
@@ -76,3 +105,4 @@ export const FAQ = () => {
     </section>
   );
 };
+

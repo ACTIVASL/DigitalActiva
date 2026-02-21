@@ -56,3 +56,20 @@ node_modules
 full_lint_report.txt
 full_lint_report_forced.txt
 github-actions-key.json
+
+
+# Vibe Video
+.vv-secrets.json
+.temp/
+video-clip/*.mp4
+first-frames/*.png
+output/*.mp4
+
+# Large video assets (deployed via Firebase, not tracked in git)
+apps/landing-web/public/crm-demo.mp4
+
+# Large original image (WebP version is tracked instead)
+apps/landing-web/src/assets/images/team-2026.png
+
+# Vite timestamp files
+*.timestamp-*.mjs

@@ -71,7 +71,7 @@ export const SettingsView: React.FC = () => {
                   className="input-pro"
                   value={formData.name || ''}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="Ej: Centro de Musicoterapia Activa"
+                  placeholder="Ej: Centro Activa SL"
                 />
               </div>
               <div className="space-y-2">
@@ -442,7 +442,7 @@ export const SettingsView: React.FC = () => {
               ) {
                 // In a real implementation this would call deleteUser(user)
                 alert(
-                  'Por seguridad, contacta a soporte@activamusicoterapia.com para confirmar la baja definitiva GDPR.',
+                  'Por seguridad, contacta a soporte@activa-sl.digital para confirmar la baja definitiva GDPR.',
                 );
               }
             }}
@@ -455,7 +455,7 @@ export const SettingsView: React.FC = () => {
       {/* LEGAL FOOTER */}
       <div className="text-center text-xs text-slate-400 py-8 flex justify-center gap-6">
         <a
-          href="https://activamusicoterapia.com/legal/terms"
+          href="https://activa-sl-corporate.web.app/legal/terms"
           target="_blank"
           rel="noreferrer"
           className="hover:text-slate-600 transition-colors"
@@ -463,14 +463,14 @@ export const SettingsView: React.FC = () => {
           Términos de Servicio
         </a>
         <a
-          href="https://activamusicoterapia.com/legal/privacy"
+          href="https://activa-sl-corporate.web.app/legal/privacy"
           target="_blank"
           rel="noreferrer"
           className="hover:text-slate-600 transition-colors"
         >
           Política de Privacidad
         </a>
-        <span>© 2026 Activa Musicoterapia</span>
+        <span>© 2026 Activa S.L.</span>
       </div>
     </div>
   );

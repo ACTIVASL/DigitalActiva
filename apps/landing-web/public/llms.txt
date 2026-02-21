@@ -1,0 +1,42 @@
+# ACTIVA SL Digital
+
+> Enterprise Software Engineering & AI Consultancy — Madrid, Spain (Founded 2024)
+
+## About
+ACTIVA SL Digital is a software engineering firm specializing in building proprietary digital infrastructure for businesses. We design, develop, and deploy custom CRMs, high-performance websites, and internal business applications. Our model delivers software as an owned asset, not a rented subscription.
+
+## Core Differentiator: Evidence-Based AI
+We implement AI integrations with granular proof enforcement — every AI recommendation is traceable and verifiable, preventing hallucinations in business-critical workflows.
+
+## Services
+- **Custom CRM/ERP Development**: React + Firebase + Google Cloud. Full data sovereignty. GDPR/ISO compliant.
+- **High-Performance Web Development**: <0.5s load time, 98/100 Lighthouse score, advanced technical SEO.
+- **ACTIVA OS (Titanium)**: Proprietary Command Center for CEOs — integrates Gemini (Active Agent) + NotebookLM (Passive Agent) in an A2A orchestration platform.
+- **AI Integration Strategy**: Transition from manual processes to AI-driven workflows with zero hallucination guarantee.
+- **Technical Audit**: Deep analysis of technical debt, architecture review, and optimization roadmap.
+
+## Technology Stack
+React 18, TypeScript, Vite 5, Tailwind CSS, Firebase (Firestore, Auth, Hosting, Functions), Google Cloud Platform, PWA (Offline-First)
+
+## Pricing Model
+- **Audit**: From €5,000 (Technical Debt Analysis + Roadmap)
+- **Web High-Performance**: From €8,000 (4-6 weeks delivery)
+- **Custom CRM/Platform**: From €15,000 (8-12 weeks delivery)
+- **Model**: Proprietary Software (Asset). NOT a subscription. Client owns 100% of code and data.
+
+## Target Industries
+Construction firms, retail chains, healthcare organizations, professional services, SMEs seeking digital sovereignty.
+
+## Contact
+- Email: contacto@activa-sl.digital
+- Engineering: ingenieria@activa-sl.digital
+- Audit Requests: auditoria@activa-sl.digital
+- Web: https://activa-sl-digital.web.app
+- LinkedIn: https://www.linkedin.com/company/activa-sl-digital
+- GitHub: https://github.com/ACTIVASL
+
+## Links
+- [Agent Protocol (A2A Interface)](/for-agents.html)
+- [Machine-Readable Manifest](/agent-manifest.json)
+- [Service Catalog](/programas)
+- [FAQ](/faq)

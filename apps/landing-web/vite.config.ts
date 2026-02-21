@@ -12,9 +12,9 @@ export default defineConfig({
       manifest: {
         name: 'Activa Digital',
         short_name: 'ActivaOS',
-        description: 'Titanium AI Operating System',
-        theme_color: '#EC008C',
-        background_color: '#ffffff',
+        description: 'Consultoría de Ingeniería de Software de Alto Impacto',
+        theme_color: '#0A0F1D',
+        background_color: '#020617',
         display: 'standalone',
         icons: [
           {
@@ -39,11 +39,10 @@ export default defineConfig({
     minify: 'esbuild',
     rollupOptions: {
       output: {
-        // manualChunks: {
-        //   'react-core': ['react', 'react-dom', 'react-router-dom'],
-        //   'framer-motion': ['framer-motion'],
-        //   'ui-libs': ['lucide-react', 'clsx', 'tailwind-merge'],
-        // },
+        manualChunks: {
+          'react-core': ['react', 'react-dom', 'react-router-dom'],
+          'ui-libs': ['lucide-react', 'clsx', 'tailwind-merge'],
+        },
       },
     },
   },

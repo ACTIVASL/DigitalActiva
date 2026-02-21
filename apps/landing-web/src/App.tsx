@@ -1,10 +1,17 @@
 import { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import { PrivacyPolicy } from './pages/legal/PrivacyPolicy';
-import { TermsOfService } from './pages/legal/TermsOfService';
-import { DataDeletion } from './pages/legal/DataDeletion';
 import { NotFound } from './pages/NotFound';
+
+const PrivacyPolicy = lazy(() =>
+  import('./pages/legal/PrivacyPolicy').then((m) => ({ default: m.PrivacyPolicy })),
+);
+const TermsOfService = lazy(() =>
+  import('./pages/legal/TermsOfService').then((m) => ({ default: m.TermsOfService })),
+);
+const DataDeletion = lazy(() =>
+  import('./pages/legal/DataDeletion').then((m) => ({ default: m.DataDeletion })),
+);
 
 const Home = lazy(() => import('./pages/Home'));
 const DigitalizationImportancePost = lazy(() =>
@@ -17,9 +24,11 @@ const Programs = lazy(() =>
   import('./pages/Programs').then((module) => ({ default: module.Programs })),
 );
 
+
 import { ViewTransitions } from './components/ui/ViewTransitions';
 import { FilmGrain } from './components/ui/FilmGrain';
-import { ErrorBoundary } from './components/shared/ErrorBoundary';
+import { ErrorBoundary } from '@monorepo/ui-system';
+
 
 function App() {
   return (
@@ -29,6 +38,7 @@ function App() {
           <FilmGrain />
           <Router>
             <ViewTransitions />
+
             <Routes>
               <Route
                 path="/"
@@ -38,9 +48,10 @@ function App() {
                   </Suspense>
                 }
               />
-              <Route path="/legal/privacy" element={<PrivacyPolicy />} />
-              <Route path="/legal/terms" element={<TermsOfService />} />
-              <Route path="/legal/data-deletion" element={<DataDeletion />} />
+              <Route path="/legal/privacy" element={<Suspense fallback={<div className="min-h-screen bg-[#020617]" />}><PrivacyPolicy /></Suspense>} />
+              <Route path="/legal/terms" element={<Suspense fallback={<div className="min-h-screen bg-[#020617]" />}><TermsOfService /></Suspense>} />
+              <Route path="/legal/data-deletion" element={<Suspense fallback={<div className="min-h-screen bg-[#020617]" />}><DataDeletion /></Suspense>} />
+
 
               {/* Blog Routes */}
               <Route
@@ -82,12 +93,12 @@ function App() {
 }
 
 const AuthRedirect = () => {
-  window.location.href = 'https://app.activamusicoterapia.com/auth/login';
+  window.location.href = 'https://activa-sl-digital.web.app/auth/login';
   return null;
 };
 
 const DashboardRedirect = () => {
-  window.location.href = 'https://app.activamusicoterapia.com/dashboard';
+  window.location.href = 'https://activa-sl-digital.web.app/dashboard';
   return null;
 };
 

@@ -2,7 +2,7 @@ import React, { ReactNode, useState } from 'react';
 import { Sidebar } from './Sidebar'; // Keep Sidebar for "Tools" navigation
 import { MobileBottomNav } from './MobileBottomNav';
 import { useUIStore } from '../stores/useUIStore';
-import { TitaniumBackground } from '../components/ui/TitaniumBackground';
+import { TitaniumBackground } from '@monorepo/ui-system';
 import logoCircular from '../assets/logo-alpha.png';
 import { Bell } from 'lucide-react';
 

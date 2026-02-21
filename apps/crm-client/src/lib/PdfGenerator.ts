@@ -202,7 +202,7 @@ export const PdfGenerator = {
     // Brand Note
     doc.setFontSize(6);
     doc.setTextColor(203, 213, 225); // Slate 300
-    doc.text('Generado por Activa Musicoterapia CRM', pageWidth / 2, pageHeight - 10, {
+    doc.text('Generado por Activa S.L. CRM', pageWidth / 2, pageHeight - 10, {
       align: 'center',
     });
 

@@ -2,22 +2,51 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Main Landing -->
   <url>
-    <loc>https://activamusicoterapia.com/</loc>
-    <lastmod>2026-01-07</lastmod>
+    <loc>https://activa-sl-digital.web.app/</loc>
+    <lastmod>2026-02-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-  <!-- Legal Pages -->
+  <!-- Programs / Solutions -->
   <url>
-    <loc>https://activamusicoterapia.com/legal/privacy</loc>
-    <lastmod>2026-01-07</lastmod>
+    <loc>https://activa-sl-digital.web.app/programas</loc>
+    <lastmod>2026-02-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- Blog -->
+  <url>
+    <loc>https://activa-sl-digital.web.app/blog</loc>
+    <lastmod>2026-02-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Blog Posts -->
+  <url>
+    <loc>https://activa-sl-digital.web.app/blog/por-que-digitalizar-tu-empresa</loc>
+    <lastmod>2026-02-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <!-- AI Agent Protocol Interface -->
+  <url>
+    <loc>https://activa-sl-digital.web.app/for-agents.html</loc>
+    <lastmod>2026-02-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
+  <!-- LLMs.txt - AI Discovery -->
   <url>
-    <loc>https://activamusicoterapia.com/legal/terms</loc>
-    <lastmod>2026-01-07</lastmod>
+    <loc>https://activa-sl-digital.web.app/llms.txt</loc>
+    <lastmod>2026-02-20</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.4</priority>
+  </url>
+  <!-- Agent Manifest JSON -->
+  <url>
+    <loc>https://activa-sl-digital.web.app/agent-manifest.json</loc>
+    <lastmod>2026-02-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
   </url>
 </urlset>

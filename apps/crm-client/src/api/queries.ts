@@ -23,8 +23,8 @@ export function usePatients() {
       // Validation happens strictly on WRITE (Mutations).
       return rawData as Patient[];
     },
-    enabled: true,
-    staleTime: 0, // TITANIUM REALTIME: Always fresh
+    enabled: !!uid,
+    staleTime: 30_000, // 30s — prevents refetch storm on every mount
   });
 }
 
@@ -36,7 +36,8 @@ export function useSettings() {
       if (!uid) return {} as ClinicSettings;
       return await SettingsRepository.get(uid);
     },
-    enabled: true,
+    enabled: !!uid,
+    staleTime: 60_000, // 1 minute
   });
 }
 

@@ -19,7 +19,7 @@ export const useActivityLog = () => {
     queryKey: ['activity_logs', userId || 'anonymous'],
     queryFn: async () => {
       // TITANIUM DEMO: Read from LocalStorage if no user or demo user
-      if (!userId || auth.currentUser?.email === 'demo@activamusicoterapia.com') {
+      if (!userId || auth.currentUser?.email === 'demo@activa-sl.digital') {
         try {
           const stored = localStorage.getItem('demo_logs');
           return stored ? JSON.parse(stored) : [];

@@ -4,7 +4,7 @@ const path = require('path');
 
 // CONFIG
 const TARGET_URL = 'http://localhost:5173';
-const USER_EMAIL = 'info@activamusicoterapia.com';
+const USER_EMAIL = 'info@activa-sl.digital';
 const DUMMY_PASS = 'waiting_for_input';
 
 (async () => {

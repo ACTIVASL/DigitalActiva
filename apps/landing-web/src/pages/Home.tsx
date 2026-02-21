@@ -8,7 +8,9 @@ import { FAQ } from '../components/landing/FAQ';
 import { Testimonials } from '../components/landing/Testimonials';
 import { About } from '../components/landing/About';
 import { Footer } from '../components/landing/Footer';
-// import { Preloader } from '../components/ui/Preloader'; // Unused
+import { TrustBar } from '../components/landing/TrustBar';
+import Methodology from '../components/landing/Methodology';
+
 import { BookModal } from '../components/modals/BookModal';
 import { ClinicModal } from '../components/modals/ClinicModal';
 import { CourseModal } from '../components/modals/CourseModal';
@@ -17,11 +19,12 @@ import { SeoHead } from '../components/shared/SeoHead';
 
 import { TechStack } from '../components/landing/TechStack';
 
+interface ModalData {
+  interest?: string;
+  [key: string]: unknown;
+}
+
 export const Home = () => {
-  interface ModalData {
-    interest?: string;
-    [key: string]: unknown; // Keep flexible but explicit
-  }
   const [activeModal, setActiveModal] = useState<string | null>(null);
   const [modalData, setModalData] = useState<ModalData | null>(null);
   const [formStep, setFormStep] = useState(0);
@@ -70,64 +73,12 @@ export const Home = () => {
     },
   };
 
-  const schema = {
-    // ... schema remains same
-    '@context': 'https://schema.org',
-    '@type': 'ProfessionalService',
-    name: 'Activa SL Digital',
-    alternateName: 'Activa OS',
-    url: 'https://activa-sl-digital.web.app',
-    logo: 'https://activa-sl-digital.web.app/logo-premium.png',
-    description:
-      'Agencia de Inteligencia Artificial y Transformación Digital. Software Factory en el ecosistema Google.',
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: 'Calle de la Innovación 12',
-      addressLocality: 'Madrid',
-      postalCode: '28010',
-      addressCountry: 'ES',
-    },
-    geo: {
-      '@type': 'GeoCoordinates',
-      latitude: 40.4168,
-      longitude: -3.7038,
-    },
-    telephone: '+34910000000',
-    priceRange: '$$$$',
-    // medicalSpecialty removed as it's an agency now
-    availableService: [
-      {
-        '@type': 'Service',
-        name: 'Transformación Digital',
-        description: 'Modernización de infraestructuras y migración a la nube.',
-      },
-      {
-        '@type': 'Service',
-        name: 'Desarrollo de IA',
-        description: 'Integración de Agentes Gemini y automatización de procesos.',
-      },
-    ],
-    sameAs: [
-      'https://www.linkedin.com/company/activa-sl',
-      'https://www.instagram.com/activa.digital',
-      'https://www.facebook.com/activa.digital',
-    ],
-    founder: {
-      '@type': 'Person',
-      name: 'Aurora Del Río',
-      jobTitle: 'CEO & Founder',
-      image: 'https://activa-sl-digital.web.app/assets/aurora-profile.jpg',
-      description: 'Arquitecta de Sistemas y Experta en Transformación Digital.',
-      alumniOf: 'Google Cloud Certified',
-    },
-  };
-
   return (
     <>
-      <SeoHead schema={schema} />
+      <SeoHead />
 
-      {/* CLINCAL DEEP VOID THEME WRAPPER */}
-      <div className="font-sans antialiased selection:bg-brand-primary selection:text-white bg-brand-dark text-slate-300 min-h-screen relative overflow-x-hidden">
+      {/* MAIN CONTENT WRAPPER */}
+      <div id="main-content" className="font-sans antialiased selection:bg-brand-primary selection:text-white bg-brand-dark text-slate-300 min-h-screen relative overflow-x-hidden">
         {/* AMBIENT BACKGROUND LIGHTING (AURORA) */}
         <div className="fixed inset-0 pointer-events-none z-0">
           <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[80vw] h-[60vh] bg-brand-primary/10 blur-[120px] rounded-full opacity-60 mix-blend-screen animate-pulse-slow"></div>
@@ -141,23 +92,65 @@ export const Home = () => {
           <Navigation />
 
           <main className="relative flex flex-col justify-center min-h-screen overflow-hidden">
-            <Hero />
-            <Services />
-            <TechStack />
-            <Professionals onOpenModal={openModal} />
-            <FAQ />
-            <Testimonials />
-            <About />
+            <section id="hero" data-agent-section="hero">
+              <Hero />
+            </section>
+            <TrustBar />
+            <section id="services" data-agent-section="services">
+              <Services />
+            </section>
+            <section id="methodology" data-agent-section="methodology">
+              <Methodology onOpenModal={openModal} />
+            </section>
+            <section id="tech-stack" data-agent-section="tech-stack">
+              <TechStack />
+            </section>
+            <section id="professionals" data-agent-section="professionals">
+              <Professionals onOpenModal={openModal} />
+            </section>
+            <section id="testimonials" data-agent-section="testimonials">
+              <Testimonials />
+            </section>
+            <section id="faq" data-agent-section="faq">
+              <FAQ />
+            </section>
+            <section id="about" data-agent-section="about">
+              <About />
+            </section>
           </main>
         </div>
         <Footer />
       </div>
       {/* MODAL COMPONENT - ROOT LEVEL PORTAL SIMULATION */}
       {activeModal && modalConfig[activeModal] && (
-        <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 modal-overlay font-sans">
+        <div
+          className="fixed inset-0 z-[10000] flex items-center justify-center p-4 modal-overlay font-sans"
+          role="dialog"
+          aria-modal="true"
+          aria-label={modalConfig[activeModal].title || 'Modal'}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') closeModal();
+            if (e.key === 'Tab') {
+              const focusable = e.currentTarget.querySelectorAll<HTMLElement>(
+                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+              );
+              if (focusable.length === 0) return;
+              const first = focusable[0];
+              const last = focusable[focusable.length - 1];
+              if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+              } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
+              }
+            }
+          }}
+        >
           <div
             className="absolute inset-0 bg-brand-dark/80 backdrop-blur-xl transition-opacity"
             onClick={closeModal}
+            aria-hidden="true"
           ></div>
           <div className="relative bg-white rounded-[2.5rem] shadow-2xl w-full max-w-md overflow-hidden modal-content border border-white/20 ring-1 ring-black/5 transform transition-all scale-100 animate-fade-in-up">
             <div
@@ -175,6 +168,7 @@ export const Home = () => {
               )}
               <button
                 onClick={closeModal}
+                aria-label="Cerrar modal"
                 className={`text-gray-400 hover:text-brand-dark transition-colors p-2.5 rounded-full hover:bg-gray-50 ${modalConfig[activeModal].hideTitle ? 'bg-white/80 shadow-sm' : ''}`}
               >
                 <X size={24} />

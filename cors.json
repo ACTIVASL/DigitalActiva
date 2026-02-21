@@ -1,7 +1,11 @@
 [
     {
         "origin": [
-            "*"
+            "https://activa-sl-digital.web.app",
+            "https://activa-sl-digital.firebaseapp.com",
+            "https://activa-sl-corporate.web.app",
+            "https://activa-sl-corporate.firebaseapp.com",
+            "http://localhost:5173"
         ],
         "method": [
             "GET",

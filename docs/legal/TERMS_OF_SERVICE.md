@@ -32,4 +32,4 @@ We reserve the right to terminate access for violation of these terms.
 
 ## 7. Contact
 
-Legal Department: info@activamusicoterapia.com
+Legal Department: legal@activa-sl.digital

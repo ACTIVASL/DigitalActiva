@@ -3,10 +3,10 @@ import { RevealSection } from '../ui/RevealSection';
 
 export const TrustBar = () => {
     const stats = [
-        { icon: Users, value: "+50", label: "Empresas Digitalizadas" },
+        { icon: Users, value: "B2B", label: "Empresas & Startups" },
         { icon: Building, value: "100%", label: "Propiedad del Código" },
         { icon: Globe, value: "24/7", label: "Soporte Critical Ops" },
-        { icon: Award, value: "Top 1", label: "Ingeniería Titanium©" },
+        { icon: Award, value: "GCP", label: "Google Cloud Partner" },
     ];
 
     return (

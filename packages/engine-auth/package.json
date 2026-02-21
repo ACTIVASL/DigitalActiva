@@ -7,7 +7,7 @@
     "sideEffects": false,
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/monorepo/engine-auth.git"
+        "url": "git+https://github.com/ACTIVASL/ACTIVA-SL.git"
     },
     "main": "./src/index.ts",
     "types": "./src/index.ts",
@@ -17,17 +17,11 @@
     },
     "dependencies": {
         "@monorepo/ui-system": "workspace:^",
-        "clsx": "^2.1.1",
-        "cmdk": "^1.1.1",
-        "framer-motion": "^12.34.0",
-        "lucide-react": "^0.563.0",
-        "react-signature-canvas": "1.1.0-alpha.2",
-        "react-to-print": "^3.2.0",
-        "tailwind-merge": "^3.4.0",
         "zod": "^3.22.4"
     },
     "peerDependencies": {
         "firebase": "^10.14.1",
+        "lucide-react": ">=0.300.0",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "react-router-dom": "^7.11.0"

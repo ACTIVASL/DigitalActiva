@@ -3,10 +3,10 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 // LAYOUT & THEME
 import { AppLayout } from '@/layout/AppLayout';
-import { ErrorBoundary, CommandMenu, OfflineIndicator } from '@monorepo/ui-system';
+import { ErrorBoundary, CommandMenu, OfflineIndicator, toast } from '@monorepo/ui-system';
 
 // AUTH
-import { LoginView } from '@monorepo/engine-auth';
+import { LoginViewV2 as LoginView } from '@monorepo/engine-auth';
 import { useAuth } from './context/AuthContext';
 
 // ROUTES
@@ -160,7 +160,7 @@ function App() {
     } catch (e) {
       console.error('Failed to save group session', e);
       // Soft Rollback: Re-fetch data to sync with server truth
-      alert('Error de sincronización. Restaurando datos...');
+      toast.error('Error de sincronización. Restaurando datos...');
       fetchGroupSessions();
     }
   };
@@ -177,7 +177,7 @@ function App() {
       logActivity('delete', 'Sesión Grupal eliminada');
     } catch (e) {
       console.error(e);
-      alert('Error al eliminar. Restaurando datos...');
+      toast.error('Error al eliminar. Restaurando datos...');
       fetchGroupSessions();
     }
   };
@@ -371,7 +371,7 @@ function App() {
         },
         onError: (err) => {
           console.error('QuickAppointment Error:', err);
-          alert('Error al crear la cita y el paciente. Verifique los datos.');
+          toast.error('Error al crear la cita y el paciente. Verifique los datos.');
         },
       });
     } else {
@@ -402,7 +402,7 @@ function App() {
           logActivity('session', `Cita rápida creada para ${patient.name}`);
         } catch (err) {
           console.error('Titanium Sync Error:', err);
-          alert('Error al agendar la cita. Inténtelo de nuevo.');
+          toast.error('Error al agendar la cita. Inténtelo de nuevo.');
         }
       }
     }
@@ -442,7 +442,7 @@ function App() {
           onNavigate={(view) => handleNavigate(view)}
           onLogout={async () => {
             await logout();
-            window.location.reload();
+            navigate('/auth/login', { replace: true });
           }}
 
         >

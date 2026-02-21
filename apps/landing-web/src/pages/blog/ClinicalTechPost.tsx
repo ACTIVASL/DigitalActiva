@@ -12,17 +12,17 @@ export const ClinicalTechPost = () => {
         '@context': 'https://schema.org',
         '@type': 'BlogPosting',
         headline: 'Gestión Clínica 2.0: Por qué tu Excel ya no es suficiente',
-        image: 'https://activamusicoterapia.com/assets/blog-tech.jpg',
+        image: 'https://activa-sl-corporate.web.app/assets/blog-tech.jpg',
         author: {
             '@type': 'Organization',
-            name: 'Activa Musicoterapia',
+            name: 'Activa S.L.',
         },
         publisher: {
             '@type': 'Organization',
-            name: 'Activa Musicoterapia',
+            name: 'Activa S.L.',
             logo: {
                 '@type': 'ImageObject',
-                url: 'https://activamusicoterapia.com/activa-logo-new.png',
+                url: 'https://activa-sl-corporate.web.app/activa-logo-new.png',
             },
         },
         datePublished: '2026-02-05',
@@ -34,7 +34,7 @@ export const ClinicalTechPost = () => {
     return (
         <div className="bg-slate-950 min-h-screen font-sans text-slate-300 selection:bg-brand-primary selection:text-white">
             <Helmet>
-                <title>Gestión Clínica Digital vs Excel | Activa Musicoterapia</title>
+                <title>Gestión Clínica Digital vs Excel | Activa S.L.</title>
                 <meta
                     name="description"
                     content="Análisis: Riesgos de usar Excel en terapia y ventajas de un CRM Clínico especializado (Titanium Standard)."
@@ -158,7 +158,7 @@ export const ClinicalTechPost = () => {
                                 <h3 className="text-2xl font-bold text-white mb-4">¿Listo para modernizar tu clínica?</h3>
                                 <p className="text-slate-300 mb-6">Únete a cientos de terapeutas que ya usan Activa.</p>
                                 <a
-                                    href="https://app.activamusicoterapia.com/auth/login"
+                                    href="https://activa-sl-digital.web.app/auth/login"
                                     className="inline-flex items-center px-8 py-3 bg-brand-primary hover:bg-[#D6007F] text-white font-bold rounded-full transition-all hover:scale-105 shadow-lg shadow-brand-primary/20"
                                 >
                                     <Activity className="w-5 h-5 mr-2" />

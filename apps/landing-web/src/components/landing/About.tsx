@@ -1,11 +1,12 @@
 import { RevealSection } from '../ui/RevealSection';
-import teamImage from '../../assets/images/team-nano-v2.jpg';
-import { } from 'lucide-react';
+import teamImage from '../../assets/images/team-2026.webp';
+
 
 export const About = () => {
     return (
         <section
             id="nosotros"
+            aria-label="Sobre nosotros"
             className="py-32 px-6 lg:px-12 bg-gradient-to-b from-slate-900 to-black border-t border-white/5 overflow-hidden relative"
         >
             <div className="absolute top-0 right-0 w-[1000px] h-[1000px] bg-brand-primary/5 rounded-full blur-[200px] opacity-40 pointer-events-none"></div>
@@ -44,7 +45,7 @@ export const About = () => {
                             </h2>
                             <div className="space-y-6">
                                 <p className="text-slate-400 text-xl font-body leading-relaxed font-light">
-                                    SOMOS UN EQUIPO COMPROMETIDO CON DAR UN SERVICIO QUE DE SOLUCIONES EMPRESARIALES QUE ACTIVEN TU EMPRESA Y LA ACTUALICEN CON NUEVA TECNOLOGÍA.
+                                    Somos un equipo de ingeniería especializado en construir infraestructura digital a medida. Diseñamos, desarrollamos y desplegamos software que resuelve problemas empresariales reales — CRMs, webs de alto rendimiento y aplicaciones internas que tu equipo controla al 100%.
                                 </p>
                             </div>
                         </RevealSection>

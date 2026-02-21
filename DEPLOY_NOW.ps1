@@ -9,8 +9,8 @@ Set-Location $rootPath
 
 # 2. Habilitar API via CLI (Evitar error de navegador)
 Write-Host ">>> Intentando habilitar API de Secretos via Terminal..." -ForegroundColor Magenta
-Write-Host ">>> Si se abre una ventana, inicia sesion como info@activamusicoterapia.com" -ForegroundColor Yellow
-cmd /c "gcloud auth login info@activamusicoterapia.com --brief"
+Write-Host ">>> Autenticando con Google Cloud..." -ForegroundColor Yellow
+cmd /c "gcloud auth login --brief"
 cmd /c "gcloud services enable secretmanager.googleapis.com --project=activa-sl-digital"
 
 # 3. Verificar Login Firebase

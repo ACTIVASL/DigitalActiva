@@ -72,10 +72,10 @@ const CalendarDay = memo(({ day, isSelected, isToday, events, onSelect }: Calend
       <div className="flex justify-between items-start mb-2">
         <span
           className={`text-sm font-bold w-8 h-8 flex items-center justify-center rounded-full transition-all ${isSelected
-              ? 'bg-white/20 text-white'
-              : isToday
-                ? 'bg-pink-50 text-pink-600 shadow-sm'
-                : 'text-slate-600 group-hover:text-indigo-600'
+            ? 'bg-white/20 text-white'
+            : isToday
+              ? 'bg-pink-50 text-pink-600 shadow-sm'
+              : 'text-slate-600 group-hover:text-indigo-600'
             }`}
         >
           {format(day, 'd')}
@@ -96,10 +96,10 @@ const CalendarDay = memo(({ day, isSelected, isToday, events, onSelect }: Calend
           <div key={idx} className="flex items-center gap-1.5">
             <div
               className={`w-1.5 h-1.5 rounded-full shrink-0 shadow-sm ${ev.type === 'group'
-                  ? 'bg-indigo-400'
-                  : ev.status === 'absent'
-                    ? 'bg-red-400'
-                    : 'bg-pink-400'
+                ? 'bg-indigo-400'
+                : ev.status === 'absent'
+                  ? 'bg-red-400'
+                  : 'bg-pink-400'
                 } ${isSelected ? 'ring-1 ring-white/50' : ''}`}
             ></div>
             <span
@@ -186,7 +186,7 @@ export const CalendarView: React.FC<CalendarViewProps> = memo(
   ({ patients, groupSessions, onNavigate, onOpenGroupModal, onOpenQuickAppointment }) => {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [selectedDay, setSelectedDay] = useState(new Date());
-    const [toast, setToast] = useState<{ msg: string; type: 'success' | 'error' } | null>(null);
+    const [toastData, setToastData] = useState<{ msg: string; type: 'success' | 'error' } | null>(null);
 
     // 1. DATA AGGREGATION
     const allEvents = useMemo(() => {
@@ -276,7 +276,7 @@ export const CalendarView: React.FC<CalendarViewProps> = memo(
 
     return (
       <div className="min-h-[calc(100vh-6rem)] lg:h-[calc(100vh-6rem)] w-full max-w-[1920px] mx-auto flex flex-col lg:flex-row gap-6 p-2 animate-in fade-in duration-500 lg:overflow-hidden overflow-y-auto">
-        {toast && <Toast message={toast.msg} type={toast.type} onClose={() => setToast(null)} />}
+        {toastData && <Toast message={toastData.msg} type={toastData.type} onClose={() => setToastData(null)} />}
 
         {/* --- LEFT PANEL: THE CALENDAR --- */}
         <div className="flex-1 flex flex-col bg-white/80 backdrop-blur-2xl border border-white/60 shadow-2xl shadow-indigo-100/50 rounded-3xl lg:overflow-hidden relative shrink-0">
