@@ -1,14 +1,14 @@
 {
-    "name": "activa-functions",
+    "name": "@monorepo/functions",
     "version": "1.0.0",
     "description": "Firebase Cloud Functions 2nd Gen + Genkit for Activa OS",
     "main": "lib/index.js",
     "scripts": {
         "build": "tsc",
         "build:watch": "tsc --watch",
-        "serve": "npm run build && firebase emulators:start --only functions",
-        "shell": "npm run build && firebase functions:shell",
-        "start": "npm run shell",
+        "serve": "pnpm run build && firebase emulators:start --only functions",
+        "shell": "pnpm run build && firebase functions:shell",
+        "start": "pnpm run shell",
         "deploy": "firebase deploy --only functions",
         "logs": "firebase functions:log"
     },
