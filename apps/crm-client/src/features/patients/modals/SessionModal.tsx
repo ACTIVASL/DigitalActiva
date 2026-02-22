@@ -212,10 +212,10 @@ export const SessionModal: React.FC<SessionModalProps> = ({
                 isAbsent,
                 recurrence: isRecurring
                   ? {
-                      frequency: recurrenceFreq,
-                      occurrences: recurrenceCount,
-                      daysOfWeek: [adjustedDay],
-                    }
+                    frequency: recurrenceFreq,
+                    occurrences: recurrenceCount,
+                    daysOfWeek: [adjustedDay],
+                  }
                   : undefined,
               };
 
@@ -224,7 +224,6 @@ export const SessionModal: React.FC<SessionModalProps> = ({
               // Do not setIsSaving(false) here because parent closes modal typically.
               // If it failed, it throws and we catch.
             } catch (err) {
-              console.error(err);
               alert('Error al guardar: ' + String(err));
               setIsSaving(false); // Unlock only on error
             }

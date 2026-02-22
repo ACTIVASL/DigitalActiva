@@ -31,8 +31,7 @@ export const GroupSessionRepository = {
       const parsed = GroupSessionSchema.safeParse(validationPayload);
 
       if (!parsed.success) {
-        console.error('[GroupSession] Validation Failed:', parsed.error);
-        // We throw to prevent corrupt data
+        // Prevent corrupt data
         throw new Error(`Invalid Session Data: ${parsed.error.message}`);
       }
 
@@ -51,7 +50,6 @@ export const GroupSessionRepository = {
       // Write to users/{uid}/group_sessions/{sessionId}
       await setDoc(doc(collectionRef, sessionId), sessionData);
     } catch (error) {
-      console.error('GroupSessionRepository: Create Error', error);
       throw error;
     }
   },
@@ -74,8 +72,7 @@ export const GroupSessionRepository = {
             id: doc.id, // FORCE ID from metadata to ensure it's never missing
           }) as GroupSession,
       );
-    } catch (error) {
-      console.error('GroupSessionRepository: GetAll Error', error);
+    } catch {
       return [];
     }
   },
@@ -91,7 +88,6 @@ export const GroupSessionRepository = {
       const docRef = doc(db, 'users', user.uid, 'group_sessions', sessionId);
       await updateDoc(docRef, updates);
     } catch (error) {
-      console.error('GroupSessionRepository: Update Error', error);
       throw error;
     }
   },
@@ -114,12 +110,10 @@ export const GroupSessionRepository = {
       try {
         const rootDocRef = doc(db, 'group_sessions', sessionId);
         await deleteDoc(rootDocRef);
-      } catch (e) {
-        console.warn('Legacy root delete skipped (Permission/Existence)', e);
-        // Swallow error ensures primary delete is not rolled back or reported as failure
+      } catch {
+        // Legacy root delete skipped — best effort
       }
     } catch (error) {
-      console.error('GroupSessionRepository: Delete Error', error);
       throw error;
     }
   },
@@ -149,7 +143,6 @@ export const GroupSessionRepository = {
 
       await batch.commit();
     } catch (error) {
-      console.error('GroupSessionRepository: DeleteAllSessions Error', error);
       throw error;
     }
   },

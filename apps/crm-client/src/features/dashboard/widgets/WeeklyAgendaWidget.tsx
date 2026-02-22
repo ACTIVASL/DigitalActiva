@@ -86,8 +86,8 @@ export const WeeklyAgendaWidget: React.FC<WeeklyAgendaWidgetProps> = ({
         // Optimistic check? Or just fire.
         onSessionMove(data.sessionId, targetDate);
       }
-    } catch (err) {
-      console.error('DnD Parse Error', err);
+    } catch {
+      // Invalid drag data — ignore
     }
   };
 
@@ -177,13 +177,12 @@ export const WeeklyAgendaWidget: React.FC<WeeklyAgendaWidgetProps> = ({
                       className={`
                                                 relative text-left p-2 rounded-lg border text-xs shadow-sm transition-all cursor-move
                                                 ${draggingId === String(s.id) ? 'opacity-50 scale-95 ring-2 ring-indigo-400' : 'hover:shadow-md hover:-translate-y-0.5'}
-                                                ${
-                                                  s.isAbsent
-                                                    ? 'bg-red-50 border-red-100'
-                                                    : s.type === 'group'
-                                                      ? 'bg-purple-50 border-purple-100'
-                                                      : 'bg-white border-slate-200'
-                                                }
+                                                ${s.isAbsent
+                          ? 'bg-red-50 border-red-100'
+                          : s.type === 'group'
+                            ? 'bg-purple-50 border-purple-100'
+                            : 'bg-white border-slate-200'
+                        }
                                             `}
                     >
                       <div className="font-bold text-slate-700 truncate group-hover:text-indigo-600 mb-0.5 pointer-events-none">

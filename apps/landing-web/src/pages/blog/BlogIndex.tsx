@@ -43,7 +43,7 @@ export const BlogIndex = () => {
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {posts.map((post, idx) => (
                             <RevealSection key={idx} delay={idx * 100}>
-                                <Link to={post.slug} className="group block h-full bg-[#1A2035] rounded-3xl overflow-hidden border border-white/5 hover:border-brand-primary/50 transition-all duration-300 hover:shadow-2xl hover:shadow-brand-primary/10">
+                                <Link to={post.slug} className="group block h-full bg-brand-card rounded-3xl overflow-hidden border border-white/5 hover:border-brand-primary/50 transition-all duration-300 hover:shadow-2xl hover:shadow-brand-primary/10">
                                     <div className="aspect-video overflow-hidden relative">
                                         <div className="absolute inset-0 bg-brand-primary/10 group-hover:bg-transparent transition-colors z-10"></div>
                                         <img

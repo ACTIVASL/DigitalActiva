@@ -18,8 +18,7 @@ export const SystemIntelligence: React.FC = () => {
                 const end = performance.now();
                 setLatency(Math.round(end - start));
                 setIsOnline(true);
-            } catch (e) {
-                console.warn('Telemetry Ping Failed', e);
+            } catch {
                 // Even if CORS fails, timing might work, but usually error means offline or blocked
                 // We fallback to navigator.onLine check
                 setIsOnline(navigator.onLine);

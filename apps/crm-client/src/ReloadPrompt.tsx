@@ -9,9 +9,9 @@ export const ReloadPrompt = () => {
     needRefresh: [needRefresh, setNeedRefresh],
     updateServiceWorker,
   } = useRegisterSW({
-    onRegisteredSW(_swUrl) {},
-    onRegisterError(error) {
-      console.error('SW registration error', error);
+    onRegisteredSW(_swUrl) { },
+    onRegisterError(_error) {
+      // SW registration failures are non-actionable; app degrades gracefully
     },
   });
 

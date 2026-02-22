@@ -46,7 +46,7 @@ export const AuditRepository = {
     const user = auth.currentUser;
 
     if (!user) {
-      console.warn('Audit Log skipped: No authenticated user');
+      // Audit skipped — no authenticated user
       return;
     }
 
@@ -62,8 +62,8 @@ export const AuditRepository = {
         metadata: safeMetadata,
         userAgent: navigator.userAgent,
       });
-    } catch (error) {
-      console.error('AUDIT LOG FAILURE:', error);
+    } catch {
+      // Audit log failure is non-critical
     }
   },
 
@@ -104,12 +104,8 @@ export const AuditRepository = {
           timestamp: dateObj.toISOString(),
         } as AuditLogEntry;
       });
-    } catch (error) {
-      console.warn(
-        'Audit Log Index missing or fetch error, falling back to client-side sort',
-        error,
-      );
-      // Fallback for missing index
+    } catch {
+      // Fallback for missing index — client-side sort
       const q = query(
         collection(db, COLLECTION),
         where('userId', '==', userId),

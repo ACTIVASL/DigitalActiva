@@ -35,8 +35,8 @@ export const PdfGenerator = {
         // Clip? no easy clip. Just draw image inside.
         // We assume image is square.
         doc.addImage(logoUrl, 'JPEG', 16, headerY + 1, 22, 22);
-      } catch (e) {
-        console.error('Error adding logo PDF', e);
+      } catch {
+        // Logo load failed — continue without
       }
     } else {
       // Fallback Icon
@@ -216,8 +216,8 @@ export const PdfGenerator = {
         documentId: invoice.number,
         format: 'pdf',
       });
-    } catch (e) {
-      console.warn('Audit Log Failed', e);
+    } catch {
+      // Audit log is non-critical
     }
   },
 };

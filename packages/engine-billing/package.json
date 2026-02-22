@@ -18,15 +18,14 @@
     "dependencies": {
         "@monorepo/ui-system": "workspace:^",
         "date-fns": "^4.1.0",
-        "jspdf": "^4.0.0",
         "jspdf-autotable": "^3.8.1",
-        "lucide-react": "^0.563.0",
-        "react-to-print": "^3.2.0",
         "zod": "^3.22.4"
     },
-    "devDependencies": {
-        "@types/react": "^18.3.1",
-        "@types/react-dom": "^18.3.1",
-        "typescript": "^5.9.3"
+    "peerDependencies": {
+        "jspdf": "^4.0.0",
+        "lucide-react": ">=0.300.0",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "react-to-print": "^3.2.0"
     }
 }

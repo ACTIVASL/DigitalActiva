@@ -353,8 +353,7 @@ export const EvaluationTab: React.FC<EvaluationTabProps> = ({
 
       showToast?.('Informe completo generado y archivado.', 'success');
     } catch (error) {
-      console.error('Error archiving evaluation:', error);
-      showToast?.('Error al generar informe. Detalles en consola.', 'error');
+      showToast?.('Error al generar informe.', 'error');
     } finally {
       setUploading(false);
     }

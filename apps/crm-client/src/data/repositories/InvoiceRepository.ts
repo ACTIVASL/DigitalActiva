@@ -31,8 +31,7 @@ export const InvoiceRepository = {
       );
       const snapshot = await getDocs(q);
       return snapshot.docs.map((doc) => doc.data() as Invoice);
-    } catch (error) {
-      console.error('Error fetching invoices:', error);
+    } catch {
       return [];
     }
   },
@@ -46,8 +45,7 @@ export const InvoiceRepository = {
       );
       const snapshot = await getDocs(q);
       return snapshot.docs.map((doc) => doc.data() as Invoice);
-    } catch (error) {
-      console.error('Error fetching patient invoices:', error);
+    } catch {
       // Fallback for index issues: client-side filtering
       const all = await this.getAll();
       return all.filter((inv) => inv.patientId === patientId);
@@ -141,8 +139,8 @@ export const InvoiceRepository = {
             maxSeq = parseInt(parts[2]);
           }
         }
-      } catch (e) {
-        console.warn('Could not seed invoice sequence from existing data', e);
+      } catch {
+        // Could not seed from existing data; default to 0
       }
 
       await setDoc(sequenceRef, {

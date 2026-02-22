@@ -3,7 +3,7 @@ import { BookOpen, ArrowUpRight, Mail, Download } from 'lucide-react';
 export const BookModal = () => {
   return (
     <div className="space-y-8 font-['Inter']">
-      <div className="relative h-64 bg-[#0A0F1D] rounded-3xl flex items-center justify-center overflow-hidden mb-8 group ring-1 ring-white/10 shadow-2xl perspective-container">
+      <div className="relative h-64 bg-brand-surface rounded-3xl flex items-center justify-center overflow-hidden mb-8 group ring-1 ring-white/10 shadow-2xl perspective-container">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay"></div>
         <div className="absolute top-0 right-0 w-80 h-80 bg-[#3B82F6] rounded-full blur-[100px] opacity-20 animate-pulse"></div>
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#EC008C] rounded-full blur-[100px] opacity-20 animate-pulse delay-1000"></div>

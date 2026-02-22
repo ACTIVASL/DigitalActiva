@@ -35,16 +35,12 @@ export class PatientRepository {
       const parsed = PatientSchema.safeParse({ ...data, id: snapshot.id });
 
       if (!parsed.success) {
-        console.error('[Titanium Data Firewall] Validation Failed for Patient:', id, parsed.error);
-        // Return data anyway but log critical error? Or throw?
-        // For Titanium Protocol, we should ideally throw or fix.
-        // For now, we return the raw data casted, but with strict logging.
+        // Data Firewall: validation failed but return raw data for resilience
         return { ...data, id: snapshot.id } as Patient;
       }
 
       return parsed.data;
     } catch (error) {
-      console.error('Error fetching patient:', error);
       throw error;
     }
   }
@@ -74,8 +70,7 @@ export class PatientRepository {
         const data = doc.data();
         return { ...data, id: doc.id } as Patient;
       });
-    } catch (error) {
-      console.error('Error fetching all patients:', error);
+    } catch {
       return [];
     }
   }
@@ -95,7 +90,6 @@ export class PatientRepository {
     // 1. Validate Payload (Lightweight Check)
     const validation = PatientSchema.safeParse({ ...patient, id: 'temp-id' });
     if (!validation.success) {
-      console.error('[Titanium] Creation Blocked by Schema:', validation.error);
       throw new Error(
         `Validation Failed: ${validation.error.issues.map((i) => i.path + ': ' + i.message).join(', ')}`,
       );
@@ -171,7 +165,6 @@ export class PatientRepository {
     // Validate Session
     const parsed = SessionSchema.safeParse(session);
     if (!parsed.success) {
-      console.error('[Titanium Data Firewall] Invalid Session Data:', parsed.error);
       throw new Error('Invalid Session Data');
     }
 

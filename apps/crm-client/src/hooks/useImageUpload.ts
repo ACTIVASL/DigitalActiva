@@ -83,7 +83,6 @@ export const useImageUpload = (): UseImageUploadResult => {
       setUploading(false);
       return url;
     } catch (err: unknown) {
-      console.error('Upload hook error:', err);
       setError((err as Error).message || 'Error al subir imagen');
       setUploading(false);
       return null;

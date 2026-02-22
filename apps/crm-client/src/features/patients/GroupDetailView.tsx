@@ -73,7 +73,6 @@ export const GroupDetailView: React.FC<GroupDetailViewProps> = ({ groupSessions,
       alert('Grupo eliminado correctamente.');
       navigate('/groups');
     } catch (error) {
-      console.error(error);
       alert('Error al eliminar grupo.');
     }
   };
@@ -268,13 +267,12 @@ export const GroupDetailView: React.FC<GroupDetailViewProps> = ({ groupSessions,
                       Valoración / Evolución
                       {session.energyLevel && (
                         <span
-                          className={`px-2 py-[1px] rounded-full text-[9px] border ${
-                            session.energyLevel === 'High'
+                          className={`px-2 py-[1px] rounded-full text-[9px] border ${session.energyLevel === 'High'
                               ? 'bg-amber-100 text-amber-700 border-amber-200'
                               : session.energyLevel === 'Medium'
                                 ? 'bg-slate-100 text-slate-600 border-slate-200'
                                 : 'bg-slate-50 text-slate-400 border-slate-100'
-                          }`}
+                            }`}
                         >
                           Energía:{' '}
                           {session.energyLevel === 'High'

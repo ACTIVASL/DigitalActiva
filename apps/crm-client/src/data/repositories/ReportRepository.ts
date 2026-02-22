@@ -22,7 +22,6 @@ export const ReportRepository = {
       // Graceful fallback if index is missing
       const err = error as { code?: string };
       if (err.code === 'failed-precondition') {
-        console.warn("Titanium Warning: Missing Collection Group Index for 'reports'.");
         throw new Error('Requiere Índice de Firestore (Collection Group: reports).');
       }
       throw error;

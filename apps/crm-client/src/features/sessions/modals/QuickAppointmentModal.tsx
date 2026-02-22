@@ -92,7 +92,6 @@ export const QuickAppointmentModal: React.FC<QuickAppointmentModalProps> = ({
         }
       }
     } catch (err) {
-      console.error('ERROR CITA:', err);
       alert('Error al procesar la cita');
     }
   };

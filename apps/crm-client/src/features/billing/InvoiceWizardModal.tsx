@@ -10,6 +10,7 @@ import { useInvoiceController } from '../../hooks/controllers/useInvoiceControll
 import { useSettingsController } from '../../hooks/controllers/useSettingsController';
 import { ClinicSettings } from '../../lib/types';
 import { BillableSession, WizardMode, WizardStep } from './components/wizard/wizardTypes';
+import { auth } from '@monorepo/engine-auth';
 
 // Sub-components
 import { WizardStep1_Mode } from './components/wizard/WizardStep1_Mode';
@@ -126,8 +127,8 @@ export const InvoiceWizardModal: React.FC<InvoiceWizardModalProps> = ({ isOpen, 
     // Upsert Settings
     try {
       await updateSettings({ billing: billingData });
-    } catch (e) {
-      console.error('Settings autosave failed', e);
+    } catch {
+      // Settings autosave is non-critical; billing data will be used from local state
     }
 
     const total = selectedSessions.reduce((acc, s) => acc + (Number(s.price) || 0), 0);
@@ -135,9 +136,13 @@ export const InvoiceWizardModal: React.FC<InvoiceWizardModalProps> = ({ isOpen, 
     const dueDate = new Date(issueDate);
     dueDate.setDate(dueDate.getDate() + 7);
 
+    const currentUserId = auth.currentUser?.uid;
+    if (!currentUserId) return alert('No hay usuario autenticado');
+
     const invoicePayload = {
       id: crypto.randomUUID(),
       number: customInvoiceNumber,
+      userId: currentUserId,
       patientId: mode === 'INDIVIDUAL' ? (selectedPatient?.id as string) : 'GROUPS',
       patientName:
         mode === 'INDIVIDUAL' ? selectedPatient?.name || 'Cliente' : selectedGroupName || 'Grupo',
@@ -181,8 +186,7 @@ export const InvoiceWizardModal: React.FC<InvoiceWizardModalProps> = ({ isOpen, 
       setSelectedGroupName(null);
       setSelectedSessionIds([]);
     } catch (e) {
-      console.error('Error creating invoice:', e);
-      alert('Error al generar factura: ' + e);
+      alert('Error al generar factura');
     }
   };
 

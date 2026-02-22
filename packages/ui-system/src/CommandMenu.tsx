@@ -47,7 +47,7 @@ export const CommandMenu = () => {
 
         <Command.Group heading="Acciones Rápidas" className="mb-2">
           <Command.Item
-            onSelect={() => run(() => console.log('Quick Appointment'))}
+            onSelect={() => run(() => { /* TODO: Quick Appointment action */ })}
             className="relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none aria-selected:bg-slate-100 aria-selected:text-slate-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
           >
             <Calendar className="mr-2 h-4 w-4" />

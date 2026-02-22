@@ -61,7 +61,6 @@ export const ReportModal: React.FC<ReportModalProps> = ({
       // Close after delay or just let user chose
       setTimeout(onClose, 1500);
     } catch (error) {
-      console.error(error);
       setToast({ msg: 'Error al guardar el informe', type: 'error' });
     }
   };
@@ -77,21 +76,21 @@ export const ReportModal: React.FC<ReportModalProps> = ({
       const functionalText =
         scores.length > 0
           ? labels
-              .map((label: string, idx: number) => {
-                const score = scores[idx] || 0;
-                const level =
-                  score === 0
-                    ? 'Nulo/No Evaluado'
-                    : score === 1
-                      ? 'Bajo/Emergente'
-                      : score === 2
-                        ? 'Medio/En Proceso'
-                        : 'Alto/Consolidado';
-                if (score === 0) return null; // Skip empty
-                return `- ${label}: ${level}`;
-              })
-              .filter(Boolean)
-              .join('\n')
+            .map((label: string, idx: number) => {
+              const score = scores[idx] || 0;
+              const level =
+                score === 0
+                  ? 'Nulo/No Evaluado'
+                  : score === 1
+                    ? 'Bajo/Emergente'
+                    : score === 2
+                      ? 'Medio/En Proceso'
+                      : 'Alto/Consolidado';
+              if (score === 0) return null; // Skip empty
+              return `- ${label}: ${level}`;
+            })
+            .filter(Boolean)
+            .join('\n')
           : 'Sin registro funcional detallado.';
 
       const today = new Date().toLocaleDateString('es-ES', {
@@ -133,15 +132,14 @@ PERFIL FUNCIONAL Y MUSICAL:
 ${functionalText}
 
 EVOLUCIÓN RECIENTE (Últimas 5 Sesiones):
-${
-  patient.sessions
-    ?.slice(0, 5)
-    .map((s) => {
-      const status = s.isAbsent ? '[AUSENCIA]' : '';
-      return `- ${s.date} ${status}: ${s.notes || (s.computedPhase ? 'Fase ' + s.computedPhase : 'Sesión Estándar')}`;
-    })
-    .join('\n') || 'Sin sesiones recientes.'
-}
+${patient.sessions
+          ?.slice(0, 5)
+          .map((s) => {
+            const status = s.isAbsent ? '[AUSENCIA]' : '';
+            return `- ${s.date} ${status}: ${s.notes || (s.computedPhase ? 'Fase ' + s.computedPhase : 'Sesión Estándar')}`;
+          })
+          .join('\n') || 'Sin sesiones recientes.'
+        }
 
 Observaciones cualitativas:
 ${synthesisText || (patient.cognitiveScores as unknown as { childObs?: string })?.childObs || 'No se han registrado observaciones específicas.'}

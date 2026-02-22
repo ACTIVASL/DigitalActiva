@@ -13,10 +13,19 @@ export default {
             },
             colors: {
                 brand: {
-                    dark: '#020617', // Slate-950 (Corporate Deep Dark)
-                    primary: '#3b82f6', // Blue-500 (Corporate Neon Blue)
-                    secondary: '#94a3b8', // Slate-400 (Tech Gray)
-                    accent: '#f8fafc', // Slate-50 (White Text)
+                    // Core palette
+                    dark: '#020617',       // Deepest background (slate-950)
+                    surface: '#0A0F1D',    // Card/modal background
+                    card: '#1A2035',       // Elevated card background
+                    primary: '#3b82f6',    // Corporate Blue
+                    'primary-hover': '#2563eb', // Blue-600
+                    pink: '#EC008C',       // Brand Magenta / CTA
+                    'pink-hover': '#D6007F', // Magenta hover
+                    secondary: '#94a3b8',  // Tech Gray (slate-400)
+                    accent: '#f8fafc',     // White text (slate-50)
+                    cyan: '#00f3ff',       // Neon cyan accent
+                    muted: '#475569',      // Muted text (slate-600)
+                    'muted-light': '#64748b', // Muted light (slate-500)
                 }
             },
             animation: {

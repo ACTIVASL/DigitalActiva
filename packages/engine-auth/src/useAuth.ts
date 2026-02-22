@@ -42,8 +42,7 @@ export function useFirebaseAuthState() {
             setIsPremium(status === 'premium' || status === 'lifetime');
             setLoading(false);
           },
-          (err) => {
-            console.error('Error fetching profile:', err);
+          (_err) => {
             setIsPremium(false); // Default to free on error
             setLoading(false);
           },
@@ -69,7 +68,6 @@ export function useFirebaseAuthState() {
       await signInWithEmailAndPassword(auth, email, password);
       return true;
     } catch (err: unknown) {
-      console.error('Login Failed:', err);
       const message = err instanceof Error ? err.message : 'Error desconocido';
       setError(message || 'Error al iniciar sesión');
       setLoading(false);
@@ -85,7 +83,6 @@ export function useFirebaseAuthState() {
       await sendEmailVerification(userCred.user);
       // Note: User document creation should be handled here or via trigger if not existing
     } catch (err: unknown) {
-      console.error('Registration Failed:', err);
       const message = err instanceof Error ? err.message : 'Error desconocido';
       setError(message || 'Error al registrar usuario');
       setLoading(false);
@@ -117,8 +114,6 @@ export function useFirebaseAuthState() {
 
       // logActivity('security', 'Inicio de sesión con Google exitoso');
     } catch (err: unknown) {
-      console.error('Google Login Failed:', err);
-
       let message = 'Error al iniciar sesión con Google';
       if (err instanceof Error) {
         message = err.message;

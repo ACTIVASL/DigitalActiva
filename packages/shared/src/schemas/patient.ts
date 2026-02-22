@@ -138,7 +138,7 @@ export const CognitiveScoresSchema = z
       })
       .optional(),
     functionalScores: z.array(z.number()).optional(),
-    childProfile: z.record(z.string(), z.unknown()).optional(),
+    childProfile: z.record(z.string(), z.record(z.string(), z.number())).optional().catch(undefined),
     childObs: z.string().optional(),
   })
   .catchall(z.unknown());
@@ -215,7 +215,7 @@ export const PatientSchema = z.object({
   initialGoals: z.string().optional(),
   hasConsent: z.boolean().optional(),
   birthDate: z.string().optional(),
-  childProfile: z.record(z.unknown()).optional(),
+  childProfile: z.record(z.string(), z.record(z.string(), z.number())).optional().catch(undefined),
   childObs: z.string().optional(),
 });
 

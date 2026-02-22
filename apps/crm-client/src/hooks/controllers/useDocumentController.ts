@@ -42,7 +42,6 @@ export const useDocumentController = (patientId?: string) => {
       toastSuccess(`Documento subido: ${data.name}`);
     },
     onError: (err) => {
-      console.error('Upload Failed:', err);
       const msg = err instanceof Error ? err.message : 'Error al subir archivo';
       toastError(msg);
     },
@@ -60,8 +59,7 @@ export const useDocumentController = (patientId?: string) => {
       logActivity('delete', 'Documento eliminado');
       toastSuccess('Documento eliminado correctamente');
     },
-    onError: (err) => {
-      console.error('Delete Failed:', err);
+    onError: () => {
       toastError('Error al eliminar archivo');
     },
   });

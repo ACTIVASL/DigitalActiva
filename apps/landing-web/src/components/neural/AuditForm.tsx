@@ -20,7 +20,7 @@ type AuditFormData = z.infer<typeof auditSchema>;
 
 // --- COMPONENT ---
 export function AuditForm() {
-    const [step, setStep] = useState<'idle' | 'scanning' | 'weighing' | 'success'>('idle');
+    const [step, setStep] = useState<'idle' | 'scanning' | 'weighing' | 'success' | 'error'>('idle');
 
     const { register, handleSubmit, formState: { errors } } = useForm<AuditFormData>({
         resolver: zodResolver(auditSchema),
@@ -39,20 +39,15 @@ export function AuditForm() {
             const response = await neuralAudit(data);
 
             const result = response.data as { docUrl?: string };
-            console.log("Neural/Response:", result);
 
             if (result.docUrl) {
-                // Success
                 setStep('success');
             } else {
                 throw new Error("No Neural Response");
             }
 
-        } catch (error) {
-            console.error("Neural/Error:", error);
-            // Revert to idle or show error state (For now, just log and keep spinning to maintain illusion or reset)
-            alert("Neural Link Interrupted. Check console.");
-            setStep('idle');
+        } catch {
+            setStep('error');
         }
     };
 
@@ -222,6 +217,30 @@ export function AuditForm() {
                                 className="text-xs text-slate-500 hover:text-white underline decoration-slate-700 underline-offset-4 transition-colors"
                             >
                                 Volver al inicio
+                            </button>
+                        </motion.div>
+                    )}
+
+                    {/* --- STATE: ERROR --- */}
+                    {step === 'error' && (
+                        <motion.div
+                            key="error"
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            className="flex flex-col items-center justify-center py-8 text-center"
+                        >
+                            <div className="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center mb-6 shadow-[0_0_30px_-5px_rgba(239,68,68,0.3)]">
+                                <Zap className="w-8 h-8 text-red-400" />
+                            </div>
+                            <h3 className="text-2xl font-bold text-white mb-2">Conexión Interrumpida</h3>
+                            <p className="text-slate-400 text-sm mb-6 max-w-xs mx-auto">
+                                No hemos podido completar el análisis. Inténtalo de nuevo.
+                            </p>
+                            <button
+                                onClick={() => setStep('idle')}
+                                className="px-6 py-2 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm font-bold hover:bg-red-500/20 transition-colors"
+                            >
+                                Reintentar
                             </button>
                         </motion.div>
                     )}

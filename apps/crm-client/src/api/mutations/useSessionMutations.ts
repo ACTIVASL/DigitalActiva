@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from '@monorepo/ui-system';
 import { SessionRepository } from '../../data/repositories/SessionRepository';
 import { Session } from '../../lib/types';
 import { queryKeys } from '../queryKeys';
@@ -20,8 +21,8 @@ export function useUpdateSession() {
       await SessionRepository.update(payload.patientId, payload.sessionId, payload.data);
       return payload;
     },
-    onError: (error) => {
-      console.error('[Titanium] Update Failed:', error);
+    onError: () => {
+      toast.error('Error al actualizar la sesión');
       // No rollback needed because we didn't optimistic update.
       // Just ensure we are in sync.
       queryClient.invalidateQueries({ queryKey: queryKeys.patients.all });
@@ -47,8 +48,8 @@ export function useCreateSession() {
 
       return { ...sessionWithId, patientId: payload.patientId };
     },
-    onError: (error) => {
-      console.error('[Titanium] Create Failed:', error);
+    onError: () => {
+      toast.error('Error al crear la sesión');
       queryClient.invalidateQueries({ queryKey: queryKeys.patients.all });
       queryClient.invalidateQueries({ queryKey: queryKeys.sessions.all });
     },
@@ -68,8 +69,8 @@ export function useDeleteSession() {
       await SessionRepository.delete(payload.patientId, payload.sessionId);
       return payload;
     },
-    onError: (error) => {
-      console.error('[Titanium] Delete Failed:', error);
+    onError: () => {
+      toast.error('Error al eliminar la sesión');
       queryClient.invalidateQueries({ queryKey: queryKeys.patients.all });
       queryClient.invalidateQueries({ queryKey: queryKeys.sessions.all });
     },

@@ -10,15 +10,14 @@ export const createIDBPersister = (
   persistClient: async (client: PersistedClient) => {
     try {
       await set(idbValidKey, client);
-    } catch (error) {
-      console.error('Titanium Persistence Error (Write):', error);
+    } catch {
+      // Silent fail — offline cache write is non-critical
     }
   },
   restoreClient: async () => {
     try {
       return await get<PersistedClient>(idbValidKey);
-    } catch (error) {
-      console.error('Titanium Persistence Error (Read):', error);
+    } catch {
       return undefined;
     }
   },
@@ -32,8 +31,7 @@ export const persister = createIDBPersister();
 export const queryClient = new QueryClient({
   mutationCache: new MutationCache({
     onError: (error) => {
-      console.error('🔥 TITANIUM GLOBAL MUTATION ERROR:', error);
-      // Dispatch event for UI to pick up if needed
+      // Dispatch event for UI to pick up (Toast/ErrorBoundary)
       if (typeof window !== 'undefined') {
         window.dispatchEvent(new CustomEvent('titanium-error', { detail: error }));
       }

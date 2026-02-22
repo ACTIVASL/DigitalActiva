@@ -116,7 +116,7 @@ export const ClinicalTechPost = () => {
                             </p>
 
                             <div className="grid md:grid-cols-2 gap-6 my-8 not-prose">
-                                <div className="p-6 rounded-2xl bg-[#1A2035] border border-white/5 hover:border-cyan-400/30 transition-colors group">
+                                <div className="p-6 rounded-2xl bg-brand-card border border-white/5 hover:border-cyan-400/30 transition-colors group">
                                     <ShieldCheck className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
                                     <h4 className="text-xl font-bold text-white mb-2 font-display">
                                         Seguridad Blindada

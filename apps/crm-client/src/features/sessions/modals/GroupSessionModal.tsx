@@ -241,7 +241,6 @@ export const GroupSessionModal: React.FC<GroupSessionModalProps> = ({
               const res = onSave(sessionData);
               if (res instanceof Promise) await res;
             } catch (err) {
-              console.error('ERROR AL GUARDAR GRUPO:', err);
               alert(
                 'Error al guardar sesión: ' + (err instanceof Error ? err.message : String(err)),
               );
@@ -371,8 +370,8 @@ export const GroupSessionModal: React.FC<GroupSessionModalProps> = ({
                         <span
                           key={i}
                           className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-bold shadow-sm ${p.id
-                              ? 'bg-pink-100 text-pink-700 border border-pink-200' // Real Patient
-                              : 'bg-slate-100 text-slate-500 border border-slate-200' // Guest
+                            ? 'bg-pink-100 text-pink-700 border border-pink-200' // Real Patient
+                            : 'bg-slate-100 text-slate-500 border border-slate-200' // Guest
                             }`}
                         >
                           {p.id && <Users size={10} />}
@@ -468,12 +467,12 @@ export const GroupSessionModal: React.FC<GroupSessionModalProps> = ({
                           type="button"
                           onClick={() => setEnergyLevel(level as 'High' | 'Medium' | 'Low')}
                           className={`px-3 py-1 text-xs font-bold rounded-lg border transition-all ${energyLevel === level
-                              ? level === 'High'
-                                ? 'bg-amber-100 border-amber-300 text-amber-700'
-                                : level === 'Medium'
-                                  ? 'bg-slate-100 border-slate-300 text-slate-700'
-                                  : 'bg-slate-50 border-slate-200 text-slate-400'
-                              : 'bg-white border-slate-100 text-slate-400 hover:border-slate-300'
+                            ? level === 'High'
+                              ? 'bg-amber-100 border-amber-300 text-amber-700'
+                              : level === 'Medium'
+                                ? 'bg-slate-100 border-slate-300 text-slate-700'
+                                : 'bg-slate-50 border-slate-200 text-slate-400'
+                            : 'bg-white border-slate-100 text-slate-400 hover:border-slate-300'
                             } ${energyLevel === level ? 'ring-2 ring-offset-1 ring-amber-100' : ''}`}
                         >
                           {level === 'Low' ? 'Baja' : level === 'Medium' ? 'Media' : 'Alta'}

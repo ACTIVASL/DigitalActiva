@@ -13,7 +13,7 @@ interface KPICardProps {
   onClick?: () => void;
 }
 
-export const KPICard: React.FC<KPICardProps> = ({
+export const KPICard: React.FC<KPICardProps> = React.memo(({
   title,
   value,
   subValue,
@@ -48,4 +48,5 @@ export const KPICard: React.FC<KPICardProps> = ({
       </div>
     </Card>
   );
-};
+});
+KPICard.displayName = 'KPICard';

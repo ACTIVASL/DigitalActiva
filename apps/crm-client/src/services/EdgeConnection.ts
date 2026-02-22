@@ -34,8 +34,7 @@ class EdgeConnectionService {
     }
 
     private initializeConnection() {
-        // SIMULATION MODE: Simulating the "Heartbeat" of a busy company
-        console.log("[Antigravity] Initializing Quantum Link...");
+        // SIMULATION MODE: Heartbeat of an active system
         setTimeout(() => {
             this.startSimulation();
             this.emit({

@@ -22,8 +22,8 @@ export const useClinicalReport = () => {
         if (logoAlpha) {
           doc.addImage(logoAlpha, 'PNG', 15, 5, 30, 30);
         }
-      } catch (e) {
-        console.warn('Logo load failed for PDF, continuing without logic', e);
+      } catch {
+        // Logo load failed — continue PDF generation without logo
       }
 
       // Title
@@ -87,8 +87,7 @@ export const useClinicalReport = () => {
       doc.save(filename);
       // alert(`Informe generado correctamente: ${filename}`); // Optional: Too intrusive?
     } catch (err) {
-      console.error('PDF Generation Error:', err);
-      alert('Error al generar el PDF. Por favor verifique la consola o contacte soporte.');
+      alert('Error al generar el PDF. Por favor contacte soporte.');
     }
   };
 

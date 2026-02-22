@@ -112,8 +112,8 @@ export const DocumentRepository = {
     // We pick everything except ID from the schema to validate
     try {
       DocumentSchema.omit({ id: true }).parse(newDocPayload);
-    } catch (e) {
-      console.warn('Schema validation warning (ignoring extra fields):', e);
+    } catch {
+      // Schema validation for extra fields — non-blocking
     }
 
     const docRef = await addDoc(collection(db, `patients/${patientId}/documents`), newDocPayload);
@@ -142,8 +142,8 @@ export const DocumentRepository = {
       const storageRef = ref(storage, document.path);
       try {
         await deleteObject(storageRef);
-      } catch (error) {
-        console.warn('Storage delete failed (orphaned file?):', error);
+      } catch {
+        // Storage delete failed (orphaned file?) — best effort
       }
     }
 

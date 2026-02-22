@@ -9,7 +9,7 @@ interface OnyxCardProps {
     active?: boolean;
 }
 
-export const OnyxCard: React.FC<OnyxCardProps> = ({
+export const OnyxCard: React.FC<OnyxCardProps> = React.memo(({
     children,
     className = '',
     title,
@@ -55,4 +55,5 @@ export const OnyxCard: React.FC<OnyxCardProps> = ({
             )}
         </div>
     );
-};
+});
+OnyxCard.displayName = 'OnyxCard';

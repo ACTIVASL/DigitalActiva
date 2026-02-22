@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { PatientRepository } from '../../data/repositories/PatientRepository';
 import { queryKeys } from '../../api/queryKeys';
 import { Patient, Session } from '@monorepo/shared';
+import { toast } from '@monorepo/ui-system';
 // useAuth removed
 
 import { useActivityLog } from '../useActivityLog';
@@ -40,8 +41,8 @@ export const usePatientController = (patientId?: string) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.patients.detail(patientId!) });
       logActivity('patient', `Paciente actualizado: ${patient?.name || patientId}`);
     },
-    onError: (err) => {
-      console.error(err);
+    onError: () => {
+      toast.error('Error al actualizar paciente');
     },
   });
 
@@ -56,8 +57,8 @@ export const usePatientController = (patientId?: string) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.sessions.all }); // Refresh calendar/list
       logActivity('session', `Sesión individual creada: ${variables.date}`);
     },
-    onError: (err) => {
-      console.error(err);
+    onError: () => {
+      toast.error('Error al crear sesión');
     },
   });
 
@@ -68,8 +69,8 @@ export const usePatientController = (patientId?: string) => {
     revenue: patient?.sessions?.reduce((acc, s) => acc + (s.price || 0), 0) || 0,
     attendanceRate: patient?.sessions?.length
       ? Math.round(
-          (patient.sessions.filter((s) => !s.isAbsent).length / patient.sessions.length) * 100,
-        )
+        (patient.sessions.filter((s) => !s.isAbsent).length / patient.sessions.length) * 100,
+      )
       : 0,
   };
 

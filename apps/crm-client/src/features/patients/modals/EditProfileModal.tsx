@@ -48,8 +48,8 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
         if (url) {
           setPhotoPreview(url);
         }
-      } catch (err) {
-        console.error('Upload Failed', err);
+      } catch (_err) {
+        // Upload hook tracks error state for consumer
       }
     } else if (f) {
       const compressed = await compressImage(f);
@@ -64,7 +64,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
   };
 
   const handlePrintConsent = () => {
-    console.info(`Generando Consentimiento para ${name}.`);
+    // Print consent form for patient
     window.print();
   };
 

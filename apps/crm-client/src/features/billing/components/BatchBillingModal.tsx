@@ -7,6 +7,7 @@ import { PatientRepository } from '../../../data/repositories/PatientRepository'
 import { useInvoiceController } from '../../../hooks/controllers/useInvoiceController';
 import { Patient, Session } from '../../../lib/types';
 import { Button } from '@monorepo/ui-system';
+import { auth } from '@monorepo/engine-auth';
 
 interface BatchBillingModalProps {
   isOpen: boolean;
@@ -103,9 +104,13 @@ export const BatchBillingModal: React.FC<BatchBillingModalProps> = ({ isOpen, on
         const dueDate = new Date();
         dueDate.setDate(dueDate.getDate() + 7);
 
+        const currentUserId = auth.currentUser?.uid;
+        if (!currentUserId) throw new Error('No hay usuario autenticado');
+
         const invoicePayload = {
           id: crypto.randomUUID(),
           number: invoiceNumber,
+          userId: currentUserId,
           patientId: String(patient.id),
           patientName: patient.name,
           date: issueDate.toISOString(),
@@ -137,8 +142,7 @@ export const BatchBillingModal: React.FC<BatchBillingModalProps> = ({ isOpen, on
         await createInvoice({ invoice: invoicePayload, sessions: batchSessions });
 
         setExecutionLog((prev) => [...prev, `✅ ${patient.name}: ${total}€`]);
-      } catch (error) {
-        console.error(error);
+      } catch {
         setExecutionLog((prev) => [...prev, `❌ ${patient.name}: ERROR`]);
       }
 

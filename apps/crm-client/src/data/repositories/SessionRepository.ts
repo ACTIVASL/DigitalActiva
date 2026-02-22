@@ -55,8 +55,7 @@ export const SessionRepository = {
         return { ...data, id: d.id, patientId };
       });
     } catch (error: unknown) {
-      console.error('SessionRepository: Index missing or query failed', error);
-      // Fallback for "First Run" or Missing Index: Return empty or handle gracefully
+      // Index missing or query failed — propagate
       throw error;
     }
   },
@@ -105,7 +104,6 @@ export const SessionRepository = {
 
     // --- TITANIUM DEMO MODE FALLBACK ---
     if (!uid) {
-      console.warn('[Titanium] Demo Mode: Writing to LocalStorage');
       const stored = localStorage.getItem('demo_patients');
       if (stored) {
         const patients = JSON.parse(stored) as Patient[];
@@ -174,7 +172,6 @@ export const SessionRepository = {
 
     // --- TITANIUM DEMO MODE FALLBACK ---
     if (!uid) {
-      console.warn('[Titanium] Demo Mode: Batch Writing to LocalStorage');
       const stored = localStorage.getItem('demo_patients');
       if (stored) {
         const patients = JSON.parse(stored) as Patient[];
@@ -236,7 +233,6 @@ export const SessionRepository = {
 
     // --- TITANIUM DEMO MODE FALLBACK ---
     if (!uid) {
-      console.warn('[Titanium] Demo Mode: Updating LocalStorage');
       const stored = localStorage.getItem('demo_patients');
       if (stored) {
         const patients = JSON.parse(stored) as Patient[];
@@ -266,9 +262,7 @@ export const SessionRepository = {
         const sessionSnap = await transaction.get(sessionRef);
 
         if (!sessionSnap.exists()) {
-          console.warn(
-            `[TitaniumHeal] Session ${sessionId} missing in subcollection. Auto-creating.`,
-          );
+          // Session missing in subcollection — auto-create (heal)
           transaction.set(
             sessionRef,
             {
@@ -298,7 +292,7 @@ export const SessionRepository = {
           } else {
             // RECOVERY MODE: If missing in array, append it (Dual-Write Consistency)
             // This fixes the "Ghost Session" issue where a session exists in DB but not in UI List.
-            console.warn(`[TitaniumHeal] Session ${sessionId} restored to legacy array.`);
+            // Session restored to legacy array (heal)
             sessions.push({ ...data, id: sessionId } as Session);
             transaction.update(patientRef, { sessions });
           }
@@ -312,7 +306,6 @@ export const SessionRepository = {
         patientId,
       });
     } catch (e) {
-      console.error('[TitaniumUpdate] Transaction failed:', e);
       throw e;
     }
   },
@@ -322,7 +315,6 @@ export const SessionRepository = {
 
     // --- TITANIUM DEMO MODE FALLBACK ---
     if (!uid) {
-      console.warn('[Titanium] Demo Mode: Deleting from LocalStorage');
       const stored = localStorage.getItem('demo_patients');
       if (stored) {
         const patients = JSON.parse(stored) as Patient[];
@@ -374,7 +366,6 @@ export const SessionRepository = {
         entity: 'session',
       });
     } catch (e) {
-      console.error('[TitaniumDelete] Transaction failed:', e);
       throw e; // Propagate error so Mutation knows it failed
     }
   },

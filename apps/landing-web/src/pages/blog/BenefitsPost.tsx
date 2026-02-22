@@ -201,7 +201,7 @@ export const BenefitsPost = () => {
               </p>
 
               <div className="grid md:grid-cols-2 gap-6 my-8 not-prose">
-                <div className="p-6 rounded-2xl bg-[#1A2035] border border-white/5 hover:border-cyan-400/30 transition-colors">
+                <div className="p-6 rounded-2xl bg-brand-card border border-white/5 hover:border-cyan-400/30 transition-colors">
                   <h4 className="text-xl font-bold text-white mb-2 font-display">
                     Musicoterapia receptiva
                   </h4>

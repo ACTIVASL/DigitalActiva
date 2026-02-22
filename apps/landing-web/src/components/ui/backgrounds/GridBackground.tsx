@@ -102,11 +102,14 @@ export const GridBackground = () => {
             ctx.fillRect(0, 0, width, height);
 
             particles.forEach(p => { p.update(width, height); p.draw(ctx); });
-            requestAnimationFrame(animate);
+            frameId = requestAnimationFrame(animate);
         };
-        animate();
+        let frameId = requestAnimationFrame(animate);
 
-        return () => window.removeEventListener('resize', setSize);
+        return () => {
+            cancelAnimationFrame(frameId);
+            window.removeEventListener('resize', setSize);
+        };
     }, []);
 
     return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" style={{ mixBlendMode: 'screen', opacity: 0.8 }} />;

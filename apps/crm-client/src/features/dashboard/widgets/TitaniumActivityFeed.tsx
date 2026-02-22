@@ -153,8 +153,7 @@ export const TitaniumActivityFeed: React.FC<TitaniumActivityFeedProps> = ({
       document.body.removeChild(link);
 
       success('Descarga iniciada (Formato Google Sheets)');
-    } catch (e) {
-      console.error('Export failed', e);
+    } catch {
       error('Error al generar el archivo. Intenta de nuevo.');
     } finally {
       setIsExporting(false);

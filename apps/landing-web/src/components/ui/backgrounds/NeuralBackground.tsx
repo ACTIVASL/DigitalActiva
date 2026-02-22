@@ -96,11 +96,12 @@ export const NeuralBackground = () => {
                 }
             });
 
-            requestAnimationFrame(animate);
+            frameId = requestAnimationFrame(animate);
         };
-        animate();
+        let frameId = requestAnimationFrame(animate);
 
         return () => {
+            cancelAnimationFrame(frameId);
             window.removeEventListener('resize', setSize);
             document.removeEventListener('mousemove', onMouseMove);
         };

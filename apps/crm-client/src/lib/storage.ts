@@ -15,8 +15,7 @@ export const TitaniumStorage = {
       const snapshot = await uploadBytes(storageRef, file);
       const url = await getDownloadURL(snapshot.ref);
       return url;
-    } catch (error) {
-      console.error('TitaniumStorage Upload Error:', error);
+    } catch (error: unknown) {
       throw error;
     }
   },
@@ -28,8 +27,7 @@ export const TitaniumStorage = {
     try {
       const storageRef = ref(storage, path);
       return await getDownloadURL(storageRef);
-    } catch (error) {
-      console.error('TitaniumStorage GetURL Error:', error);
+    } catch (error: unknown) {
       throw error;
     }
   },
@@ -41,8 +39,7 @@ export const TitaniumStorage = {
     try {
       const storageRef = ref(storage, path);
       await deleteObject(storageRef);
-    } catch (error) {
-      console.error('TitaniumStorage Delete Error:', error);
+    } catch (error: unknown) {
       throw error;
     }
   },

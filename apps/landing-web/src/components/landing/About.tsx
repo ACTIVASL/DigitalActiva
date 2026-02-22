@@ -1,5 +1,5 @@
 import { RevealSection } from '../ui/RevealSection';
-import teamImage from '../../assets/images/team-2026.webp';
+import teamImage from '../../assets/images/team-2026.png';
 
 
 export const About = () => {

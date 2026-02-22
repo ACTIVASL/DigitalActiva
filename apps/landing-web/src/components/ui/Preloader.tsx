@@ -150,7 +150,7 @@ export const Preloader = ({ onComplete }: PreloaderProps) => {
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] bg-[#0A0F1D] flex items-center justify-center transition-opacity duration-[1.0s] ease-[cubic-bezier(0.22,1,0.36,1)] ${exit ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+      className={`fixed inset-0 z-[9999] bg-brand-surface flex items-center justify-center transition-opacity duration-[1.0s] ease-[cubic-bezier(0.22,1,0.36,1)] ${exit ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
     >
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
 

@@ -3,9 +3,7 @@ import { app } from '@monorepo/engine-auth';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-if (!API_URL) {
-  console.warn('⚠️ VITE_API_URL is not defined in environment variables.');
-}
+// API_URL is read from environment; if undefined, API calls will fail at runtime
 
 export const StatsService = {
   getDashboardStats: async () => {

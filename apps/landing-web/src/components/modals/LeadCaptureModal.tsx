@@ -44,8 +44,7 @@ export const LeadCaptureModal = ({ initialInterest }: { initialInterest?: string
       } else {
         alert('Hubo un error al enviar el formulario. Por favor intenta contactar por teléfono.');
       }
-    } catch (error) {
-      console.error('Error sending form:', error);
+    } catch {
       alert('Error de conexión. Por favor verifica tu internet.');
     } finally {
       setIsSubmitting(false);
@@ -168,7 +167,7 @@ export const LeadCaptureModal = ({ initialInterest }: { initialInterest?: string
           <button
             type="submit"
             disabled={isSubmitting}
-            className={`w-full bg-[#0A0F1D] text-white py-5 rounded-2xl font-['Outfit'] font-bold hover:bg-[#EC008C] transition-all shadow-xl hover:shadow-[#EC008C]/30 flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-[0.98] duration-300 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+            className={`w-full bg-brand-surface text-white py-5 rounded-2xl font-['Outfit'] font-bold hover:bg-[#EC008C] transition-all shadow-xl hover:shadow-[#EC008C]/30 flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-[0.98] duration-300 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
           >
             {isSubmitting ? 'ENVIANDO...' : 'SOLICITAR INFORMACIÓN'}{' '}
             <Send size={20} className={isSubmitting ? 'animate-pulse' : ''} />

@@ -75,7 +75,6 @@ export const PatientDetail: React.FC<PatientDetailProps> = ({ patient, onBack, o
       await uploadDocument(file, 'consent', metadata); // Pass metadata to repo
       showToast('Firma forense guardada correctamente', 'success');
     } catch (e) {
-      console.error(e);
       showToast('Error al guardar firma', 'error');
     }
   };
@@ -117,18 +116,18 @@ export const PatientDetail: React.FC<PatientDetailProps> = ({ patient, onBack, o
   // Critical Alerts Logic (View Logic)
   const highRisks = patient.safetyProfile
     ? Object.entries(patient.safetyProfile)
-        .filter(
-          ([k, v]) =>
-            v === true &&
-            [
-              'epilepsy',
-              'dysphagia',
-              'flightRisk',
-              'psychomotorAgitation',
-              'chokingHazard',
-            ].includes(k),
-        )
-        .map(([k]) => k)
+      .filter(
+        ([k, v]) =>
+          v === true &&
+          [
+            'epilepsy',
+            'dysphagia',
+            'flightRisk',
+            'psychomotorAgitation',
+            'chokingHazard',
+          ].includes(k),
+      )
+      .map(([k]) => k)
     : [];
   const isoNocivo = patient.musicalIdentity?.dislikes?.length || 0;
 

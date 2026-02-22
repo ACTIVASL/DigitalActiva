@@ -27,7 +27,6 @@ export const LoginViewV2 = () => {
     const addLog = (msg: string) => {
         const time = new Date().toLocaleTimeString();
         setLogs(prev => [`[${time}] ${msg}`, ...prev].slice(0, 8));
-        console.log(`[LoginV2] ${msg}`);
     };
 
     // 1. Initial Diagnostics
@@ -77,7 +76,6 @@ export const LoginViewV2 = () => {
             }
 
         } catch (err: unknown) {
-            console.error(err);
             setStatus('FAILED');
 
             const firebaseError = err as AuthError;

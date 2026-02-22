@@ -106,8 +106,7 @@ export const BillingRepository = {
           // Group sessions might not have a single patientId
         }))
         .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-    } catch (e) {
-      console.error('Error fetching unbilled group sessions:', e);
+    } catch {
       return [];
     }
   },

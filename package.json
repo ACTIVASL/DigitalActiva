@@ -21,7 +21,6 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "backup": "tsx scripts/backup-firestore.ts",
     "restore": "tsx scripts/restore-firestore.ts",
-    "install:functions": "npm --prefix apps/functions install",
     "prepare": "husky"
   },
   "devDependencies": {
@@ -30,6 +29,8 @@
     "@firebase/rules-unit-testing": "^5.0.0",
     "@playwright/test": "^1.57.0",
     "@types/jest": "^30.0.0",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.1",
     "@typescript-eslint/eslint-plugin": "^8.51.0",
     "@typescript-eslint/parser": "^8.51.0",
     "date-fns": "^4.1.0",
@@ -53,10 +54,7 @@
     "apps/*",
     "packages/*"
   ],
-  "dependencies": {
-    "@tanstack/react-query-persist-client": "^5.90.20",
-    "idb-keyval": "^6.2.2"
-  },
+  "dependencies": {},
   "pnpm": {
     "overrides": {
       "react": "18.3.1",
@@ -65,7 +63,13 @@
       "react-router-dom": "7.11.0",
       "firebase": "10.14.1",
       "date-fns": "4.1.0",
-      "firebase-admin": "^12.0.0"
+      "firebase-admin": "^12.0.0",
+      "lucide-react": "0.563.0",
+      "framer-motion": "10.18.0",
+      "zod": "3.24.1",
+      "@types/react": "18.3.1",
+      "@types/react-dom": "18.3.1",
+      "typescript": "5.9.3"
     }
   }
 }

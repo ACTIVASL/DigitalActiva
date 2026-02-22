@@ -3,7 +3,7 @@ import { Calendar, Video, MapPin, ShieldCheck } from 'lucide-react';
 export const CourseModal = () => {
   return (
     <div className="space-y-8 font-['Inter']">
-      <div className="bg-[#0A0F1D] text-white p-10 rounded-[2.5rem] relative overflow-hidden ring-1 ring-white/10 shadow-2xl">
+      <div className="bg-brand-surface text-white p-10 rounded-[2.5rem] relative overflow-hidden ring-1 ring-white/10 shadow-2xl">
         <div className="absolute top-0 right-0 w-80 h-80 bg-[#EC008C] rounded-full blur-[100px] opacity-20 -mr-20 -mt-20 animate-pulse"></div>
         <div className="absolute bottom-0 left-0 w-60 h-60 bg-[#3B82F6] rounded-full blur-[80px] opacity-20 -ml-10 -mb-10 animate-pulse delay-500"></div>
 

@@ -68,8 +68,8 @@ export function MemoryChat() {
             const data = result.data as { answer: string; source: string };
             setMessages(prev => [...prev, { role: "model", content: data.answer }]);
 
-        } catch (error) {
-            console.warn("Neural Link Failed (Fallback Active):", error);
+        } catch {
+            // Neural link failed — fallback response activates silently
 
             // Artificial delay for realism
             setTimeout(() => {

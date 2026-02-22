@@ -50,9 +50,7 @@ export const usePatientController = ({ patient, onUpdate, onBack }: UsePatientCo
   const runHealer = useCallback(() => {
     if (patient.id && !hasSynced) {
       import('../../../data/repositories/SessionRepository').then(({ SessionRepository }) => {
-        SessionRepository.syncLegacySessions(patient).catch((err) =>
-          console.warn('[TitaniumHeal] Background sync warning:', err),
-        );
+        SessionRepository.syncLegacySessions(patient).catch(() => { /* silent */ });
         setHasSynced(true);
       });
     }
@@ -86,8 +84,7 @@ export const usePatientController = ({ patient, onUpdate, onBack }: UsePatientCo
         showToast('Paciente eliminado correctamente', 'success');
         onBack();
       },
-      onError: (err) => {
-        console.error(err);
+      onError: () => {
         showToast('Error al eliminar paciente', 'error');
       },
     });
@@ -114,8 +111,7 @@ export const usePatientController = ({ patient, onUpdate, onBack }: UsePatientCo
           setShowSessionModal(false);
           return true;
         }
-      } catch (e) {
-        console.error('Delete Error:', e);
+      } catch {
         showToast('Error al eliminar sesión', 'error');
         return false;
       }
@@ -201,8 +197,7 @@ export const usePatientController = ({ patient, onUpdate, onBack }: UsePatientCo
         setShowSessionModal(false);
         showToast('Sesión guardada correctamente', 'success');
         return true;
-      } catch (e) {
-        console.error('Save Error:', e);
+      } catch {
         showToast('Error al guardar sesión', 'error');
         return false;
       }
@@ -270,8 +265,7 @@ export const usePatientController = ({ patient, onUpdate, onBack }: UsePatientCo
         });
         logActivity('session', `Sesión restaurada de papelera: ${patient.name}`);
         showToast('Sesión restaurada correctamente', 'success');
-      } catch (e) {
-        console.error('Restore Error:', e);
+      } catch {
         showToast('Error al restaurar sesión', 'error');
       }
     },

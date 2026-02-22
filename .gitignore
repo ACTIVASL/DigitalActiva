@@ -19,6 +19,7 @@ coverage
 # Infrastructure Secrets
 gcp-sa-key.json
 service-account.json
+github-actions-key.json
 *.pem
 *.key
 
@@ -38,6 +39,9 @@ npm-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 firebase-debug.log
+*.log
+
+# Test Artifacts
 playwright-report/
 test-results/
 
@@ -47,29 +51,28 @@ test-results/
 *.tfstate.backup
 .terraform.lock.hcl
 
-# Safety Extras
+# Firebase
 .firebase
-dist
-.DS_Store
-*.log
-node_modules
+
+# Stale Reports (do not track)
 full_lint_report.txt
 full_lint_report_forced.txt
-github-actions-key.json
 
-
-# Vibe Video
+# Vibe Video (production tooling, not app code)
 .vv-secrets.json
+.vv-project.json
+.vv-context/
 .temp/
-video-clip/*.mp4
-first-frames/*.png
-output/*.mp4
+video-clip/
+first-frames/
+output/
+scenes/
+storyboards/
+subjects/
+ref-img/
 
 # Large video assets (deployed via Firebase, not tracked in git)
 apps/landing-web/public/crm-demo.mp4
-
-# Large original image (WebP version is tracked instead)
-apps/landing-web/src/assets/images/team-2026.png
 
 # Vite timestamp files
 *.timestamp-*.mjs
