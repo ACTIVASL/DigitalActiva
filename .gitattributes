@@ -1,10 +1,12 @@
-* text=auto
-*.js text eol=lf
-*.ts text eol=lf
-*.tsx text eol=lf
-*.json text eol=lf
-*.md text eol=lf
-*.css text eol=lf
-*.svg binary
-*.png binary
-*.ico binary
+# Forzar a GitHub Linguist a ignorar archivos de configuracion y scripts en las estadisticas
+*.js linguist-vendored
+*.html linguist-vendored
+*.json linguist-vendored
+*.css linguist-vendored
+*.md linguist-vendored
+*.yml linguist-vendored
+*.yaml linguist-vendored
+
+# Asegurar que el frontEnd y backend siempre sumen para TypeScript
+*.ts linguist-detectable=true
+*.tsx linguist-detectable=true
