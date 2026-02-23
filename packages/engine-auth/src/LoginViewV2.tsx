@@ -1,12 +1,10 @@
-/* eslint-disable */
 import { useState, useEffect } from 'react';
 import {
     getAuth,
     signInWithPopup,
     GoogleAuthProvider,
     setPersistence,
-    browserLocalPersistence,
-    AuthError
+    browserLocalPersistence
 } from 'firebase/auth';
 import { app } from './firebase'; // Import app instance directly
 
@@ -35,6 +33,7 @@ export const LoginViewV2 = () => {
         addLog(`System Init. SDK: v${import.meta.env.VITE_FIREBASE_API_KEY ? 'OK' : 'MISSING'}`);
         addLog(`ApiKey: ${import.meta.env.VITE_FIREBASE_API_KEY?.slice(0, 6)}...`);
         addLog(`Auth Domain: ${auth.config.authDomain}`);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleGoogleLogin = async () => {
@@ -78,9 +77,19 @@ export const LoginViewV2 = () => {
         } catch (err: unknown) {
             setStatus('FAILED');
 
-            const firebaseError = err as AuthError;
-            const code = firebaseError.code || 'unknown';
-            const msg = firebaseError.message || String(err);
+            let code = 'unknown';
+            let msg = 'An unknown error occurred';
+
+            // Safe extraction for standard JS errors and Firebase errors
+            if (err && typeof err === 'object' && 'code' in err && 'message' in err) {
+                const fErr = err as { code: string; message: string };
+                code = fErr.code;
+                msg = fErr.message;
+            } else if (err instanceof Error) {
+                msg = err.message;
+            } else if (typeof err === 'string') {
+                msg = err;
+            }
 
             addLog(`ERROR: ${code}`);
             addLog(`MSG: ${msg}`);

@@ -46,7 +46,6 @@ export const usePatientController = ({ patient, onUpdate, onBack }: UsePatientCo
 
   // TITANIUM HEALER: Background Consistency Check
   const [hasSynced, setHasSynced] = useState(false);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const runHealer = useCallback(() => {
     if (patient.id && !hasSynced) {
       import('../../../data/repositories/SessionRepository').then(({ SessionRepository }) => {
@@ -54,19 +53,14 @@ export const usePatientController = ({ patient, onUpdate, onBack }: UsePatientCo
         setHasSynced(true);
       });
     }
-  }, [patient, hasSynced]); // Titanium: Dependencies fix
+  }, [patient, hasSynced]);
 
   // Trigger on mount or patient change
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    // We can't run async in useState init, but we can trigger simpler effects.
-    // Actually simpler: just use useEffect.
-  }, []);
-
-  // Simple Effect
   useEffect(() => {
     // Trigger sync only if patient ID changes
-    if (patient.id) runHealer();
+    if (patient.id) {
+      runHealer();
+    }
   }, [patient.id, runHealer]);
 
   // Mutations
@@ -126,8 +120,9 @@ export const usePatientController = ({ patient, onUpdate, onBack }: UsePatientCo
       try {
         if (isNew) {
           if (patient.id) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const rec = sessionData.recurrence;
+            type BasePayload = Record<string, unknown>;
+            const rawData = sessionData as BasePayload;
+            const rec = rawData.recurrence as { frequency?: string; occurrences?: number } | undefined;
 
             if (rec) {
               const { frequency, occurrences } = rec; // Fixed properties
@@ -139,8 +134,9 @@ export const usePatientController = ({ patient, onUpdate, onBack }: UsePatientCo
               for (let i = 0; i < count; i++) {
                 const newDate = addWeeks(baseDate, i * weeksToAdd);
                 // Avoid mutating original reference and remove recurrence from individual items
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
-                const { recurrence: _, ...rest } = sessionData;
+                const rest = { ...rawData };
+                delete rest.recurrence;
+
                 const sessionPayload = {
                   ...rest,
                   id: Date.now().toString() + i,

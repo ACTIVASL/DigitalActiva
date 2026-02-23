@@ -32,14 +32,16 @@ export default function StrategicCanvas() {
             const saved = localStorage.getItem('activa_dashboard_v9');
             if (!saved) return INITIAL_MODEL_DATA;
             // Safe parsing with type assertion strategy
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const parsed = JSON.parse(saved) as Record<string, SectionData>;
+            const parsed = JSON.parse(saved) as Record<string, unknown>;
             const merged: ModelData = { ...INITIAL_MODEL_DATA };
 
             Object.keys(parsed).forEach(key => {
                 if (merged[key]) {
+                    const rawData = parsed[key] as Record<string, unknown>;
+
                     // Start with safe merge of simple properties
-                    const squad = parsed[key].squad ? parsed[key].squad.map((m) => ({
+                    const rawSquad = rawData.squad as Record<string, unknown>[];
+                    const squad = Array.isArray(rawSquad) ? rawSquad.map((m) => ({
                         ...m,
                         active: m.active !== undefined ? m.active : true,
                         // Ensure required fields exist if they were missing in legacy data
@@ -48,11 +50,11 @@ export default function StrategicCanvas() {
                         function: m.function || "Unknown Function",
                         agent: m.agent || "ACTIVA-Bot",
                         result: m.result || "N/A"
-                    })) : merged[key].squad;
+                    })) as SquadMember[] : merged[key].squad;
 
                     merged[key] = {
                         ...merged[key],
-                        ...parsed[key],
+                        ...(rawData as unknown as SectionData),
                         squad: squad
                     };
                 }

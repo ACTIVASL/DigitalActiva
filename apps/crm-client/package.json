@@ -14,7 +14,7 @@
   "scripts": {
     "dev": "vite",
     "lint": "eslint . --ext ts,tsx --max-warnings 0",
-    "test": "vitest run",
+    "test": "cd ../.. && firebase emulators:exec --only firestore \"pnpm --filter crm-client exec vitest run\"",
     "typecheck": "tsc --noEmit",
     "build": "pnpm run lint && pnpm run test && pnpm run typecheck && vite build",
     "deploy": "npm run build && firebase deploy --only hosting:crm-client"

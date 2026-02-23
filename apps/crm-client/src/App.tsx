@@ -62,10 +62,8 @@ function App() {
   };
 
   const handleNewPatient = async (newPatientData: Partial<Patient>) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { id, ...rest } = newPatientData;
     const payload = {
-      ...rest,
+      ...newPatientData,
       name: newPatientData.name || 'Paciente Sin Nombre',
       sessions: [],
       clinicalFormulation: {},

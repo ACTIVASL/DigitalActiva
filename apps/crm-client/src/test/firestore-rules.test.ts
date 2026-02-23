@@ -4,7 +4,7 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 import * as fs from 'fs';
 import * as path from 'path';
 
-let testEnv: RulesTestEnvironment | undefined;
+let testEnv: RulesTestEnvironment;
 
 beforeAll(async () => {
     // Read rules from the root directory
@@ -20,13 +20,15 @@ beforeAll(async () => {
                 port: 8080,
             },
         });
-    } catch {
-        console.warn('Emulator unreachable. Skipping rules tests.');
+    } catch (e) {
+        console.error('CRITICAL: Firebase Emulator unreachable. Cannot run rules test.', e);
+        throw e; // Force vitest to fail
     }
-});
+}, 20000);
 
 beforeEach(async () => {
-    if (testEnv) await testEnv.clearFirestore();
+    if (!testEnv) throw new Error('Test environment not initialized');
+    await testEnv.clearFirestore();
 });
 
 afterAll(async () => {
@@ -35,7 +37,7 @@ afterAll(async () => {
 
 describe('Firestore Security Rules: Users & Patients', () => {
     it('should deny unauthenticated read/write to users collection', async () => {
-        if (!testEnv) return;
+        if (!testEnv) throw new Error('Test environment not initialized');
         const unauthedDb = testEnv.unauthenticatedContext().firestore();
         const userDoc = doc(unauthedDb, 'users/user123');
 
@@ -44,7 +46,7 @@ describe('Firestore Security Rules: Users & Patients', () => {
     });
 
     it('should allow authenticated users to read and write their own profile', async () => {
-        if (!testEnv) return;
+        if (!testEnv) throw new Error('Test environment not initialized');
         const aliceDb = testEnv.authenticatedContext('alice123', { email: 'alice@activa.com' }).firestore();
         const aliceDoc = doc(aliceDb, 'users/alice123');
         const bobDoc = doc(aliceDb, 'users/bob456');
@@ -58,7 +60,7 @@ describe('Firestore Security Rules: Users & Patients', () => {
     });
 
     it('should only allow patients to be created if they belong to the authenticated user', async () => {
-        if (!testEnv) return;
+        if (!testEnv) throw new Error('Test environment not initialized');
         const doctorDb = testEnv.authenticatedContext('doc123').firestore();
         const patientDocDoc = doc(doctorDb, 'patients/pat1');
         const invalidPatientDoc = doc(doctorDb, 'patients/pat2');
@@ -83,7 +85,7 @@ describe('Firestore Security Rules: Users & Patients', () => {
     });
 
     it('should deny read access to documents without parent ownership', async () => {
-        if (!testEnv) return;
+        if (!testEnv) throw new Error('Test environment not initialized');
         const docDb = testEnv.authenticatedContext('doc123').firestore();
         // In final test we'd seed a parent, but this alone verifies the rule blocking it
         const randomDoc = doc(docDb, 'documents/doc1');

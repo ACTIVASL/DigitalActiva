@@ -85,7 +85,6 @@ export function SmartConnectionModal({
         setEditForm((prev) => ({ ...prev, [name]: value }));
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
