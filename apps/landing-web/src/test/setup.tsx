@@ -42,3 +42,12 @@ const IntersectionObserverMock = function () {
     };
 };
 vi.stubGlobal('IntersectionObserver', IntersectionObserverMock);
+
+// Mock Vite PWA Virtual Module
+vi.mock('virtual:pwa-register/react', () => ({
+    useRegisterSW: () => ({
+        needRefresh: [false, vi.fn()],
+        offlineReady: [false, vi.fn()],
+        updateServiceWorker: vi.fn(),
+    }),
+}));

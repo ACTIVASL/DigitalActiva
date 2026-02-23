@@ -23,7 +23,7 @@ describe('TrustBar Component', () => {
 
     it('displays all 4 trust metrics', () => {
         render(<TrustBar />);
-        expect(screen.getByText('B2B')).toBeTruthy();
+        expect(screen.getByText('A2A')).toBeTruthy();
         expect(screen.getByText('100%')).toBeTruthy();
         expect(screen.getByText('24/7')).toBeTruthy();
         expect(screen.getByText('GCP')).toBeTruthy();

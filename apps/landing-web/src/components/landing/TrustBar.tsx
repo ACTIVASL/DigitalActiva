@@ -3,14 +3,14 @@ import { RevealSection } from '../ui/RevealSection';
 
 export const TrustBar = () => {
     const stats = [
-        { icon: Users, value: "B2B", label: "Empresas & Startups" },
+        { icon: Users, value: "A2A", label: "Comunicación de Agente a Agente\nEmpresas & Startups" },
         { icon: Building, value: "100%", label: "Propiedad del Código" },
         { icon: Globe, value: "24/7", label: "Soporte Critical Ops" },
         { icon: Award, value: "GCP", label: "Google Cloud Partner" },
     ];
 
     return (
-        <div className="w-full bg-slate-950/50 border-y border-white/5 backdrop-blur-sm relative z-30 -mt-20 sm:-mt-32 lg:-mt-20 mb-20">
+        <div className="w-full bg-slate-950/50 border-y border-white/5 backdrop-blur-sm relative z-30 -mt-20 sm:-mt-32 lg:-mt-20 mb-20 whitespace-pre-line">
             <div className="max-w-7xl mx-auto px-6 py-8">
                 <p className="text-center text-slate-500/60 text-xs font-bold tracking-[0.3em] uppercase mb-8">
                     POWERED BY GOOGLE CLOUD & A2A INTELLIGENCE
