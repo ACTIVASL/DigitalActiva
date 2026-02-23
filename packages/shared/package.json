@@ -14,7 +14,8 @@
   "types": "./src/index.ts",
   "scripts": {
     "lint": "eslint \"src/**/*.ts\"",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
   },
   "dependencies": {
     "zod": "^3.22.4"

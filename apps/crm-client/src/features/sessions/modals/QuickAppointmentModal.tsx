@@ -91,7 +91,7 @@ export const QuickAppointmentModal: React.FC<QuickAppointmentModalProps> = ({
           alert(`Se han generado ${sessionsPayload.length} reuniones futuras automáticamente.`);
         }
       }
-    } catch (err) {
+    } catch {
       alert('Error al procesar la cita');
     }
   };

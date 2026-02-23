@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import './env'; // 🚨 TITANIUM SECURITY: Enforce Environment Variable Validation at Bootstrap
 import App from './App.tsx';
 import './index.css';
 

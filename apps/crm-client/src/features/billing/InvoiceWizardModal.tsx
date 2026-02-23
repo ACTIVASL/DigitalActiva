@@ -185,7 +185,7 @@ export const InvoiceWizardModal: React.FC<InvoiceWizardModalProps> = ({ isOpen, 
       setSelectedPatientId(null);
       setSelectedGroupName(null);
       setSelectedSessionIds([]);
-    } catch (e) {
+    } catch {
       alert('Error al generar factura');
     }
   };

@@ -9,38 +9,26 @@ export const TitaniumStorage = {
    * @returns Promise<string> Download URL
    */
   upload: async (path: string, file: File | Blob): Promise<string> => {
-    try {
-      const storageRef = ref(storage, path);
-      // Metadata could be added here
-      const snapshot = await uploadBytes(storageRef, file);
-      const url = await getDownloadURL(snapshot.ref);
-      return url;
-    } catch (error: unknown) {
-      throw error;
-    }
+    const storageRef = ref(storage, path);
+    // Metadata could be added here
+    const snapshot = await uploadBytes(storageRef, file);
+    const url = await getDownloadURL(snapshot.ref);
+    return url;
   },
 
   /**
    * Get public URL for a path.
    */
   getURL: async (path: string): Promise<string> => {
-    try {
-      const storageRef = ref(storage, path);
-      return await getDownloadURL(storageRef);
-    } catch (error: unknown) {
-      throw error;
-    }
+    const storageRef = ref(storage, path);
+    return await getDownloadURL(storageRef);
   },
 
   /**
    * Delete file at path.
    */
   delete: async (path: string): Promise<void> => {
-    try {
-      const storageRef = ref(storage, path);
-      await deleteObject(storageRef);
-    } catch (error: unknown) {
-      throw error;
-    }
+    const storageRef = ref(storage, path);
+    await deleteObject(storageRef);
   },
 };

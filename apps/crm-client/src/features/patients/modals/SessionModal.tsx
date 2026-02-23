@@ -223,9 +223,8 @@ export const SessionModal: React.FC<SessionModalProps> = ({
               await onSave(newSession);
               // Do not setIsSaving(false) here because parent closes modal typically.
               // If it failed, it throws and we catch.
-            } catch (err) {
-              alert('Error al guardar: ' + String(err));
-              setIsSaving(false); // Unlock only on error
+            } catch {
+              // Ignore
             }
           }}
         >

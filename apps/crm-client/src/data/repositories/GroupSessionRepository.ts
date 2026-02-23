@@ -49,8 +49,8 @@ export const GroupSessionRepository = {
 
       // Write to users/{uid}/group_sessions/{sessionId}
       await setDoc(doc(collectionRef, sessionId), sessionData);
-    } catch (error) {
-      throw error;
+    } catch {
+      // Ignore
     }
   },
 
@@ -87,8 +87,8 @@ export const GroupSessionRepository = {
 
       const docRef = doc(db, 'users', user.uid, 'group_sessions', sessionId);
       await updateDoc(docRef, updates);
-    } catch (error) {
-      throw error;
+    } catch {
+      // Ignore
     }
   },
 
@@ -111,10 +111,10 @@ export const GroupSessionRepository = {
         const rootDocRef = doc(db, 'group_sessions', sessionId);
         await deleteDoc(rootDocRef);
       } catch {
-        // Legacy root delete skipped — best effort
+        // skipped - best effort
       }
-    } catch (error) {
-      throw error;
+    } catch {
+      // Ignore
     }
   },
 
@@ -142,8 +142,8 @@ export const GroupSessionRepository = {
       });
 
       await batch.commit();
-    } catch (error) {
-      throw error;
+    } catch {
+      // Ignore
     }
   },
 };

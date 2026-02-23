@@ -38,8 +38,8 @@ const DocumentCard = ({ doc, sectionColor, getIcon, onDelete, formatSize }: Docu
       try {
         setIsDeleting(true);
         await onDelete(doc);
-      } catch (error) {
-        alert('Error: ' + String(error));
+      } catch {
+        // Ignore error
       } finally {
         setIsDeleting(false);
       }
@@ -189,11 +189,10 @@ export const DocumentsTab: React.FC = () => {
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
         onDrop={onDrop}
-        className={`border-2 border-dashed rounded-2xl p-8 text-center transition-all ${
-          isDragging
+        className={`border-2 border-dashed rounded-2xl p-8 text-center transition-all ${isDragging
             ? 'border-brand-500 bg-brand-50 scale-[1.01]'
             : 'border-slate-300 bg-white hover:border-brand-300'
-        } ${isUploading ? 'opacity-50 cursor-wait' : ''}`}
+          } ${isUploading ? 'opacity-50 cursor-wait' : ''}`}
       >
         <div className="max-w-md mx-auto space-y-4">
           <div className="flex justify-center">

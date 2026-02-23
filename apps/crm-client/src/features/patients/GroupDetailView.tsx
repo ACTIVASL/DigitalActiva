@@ -72,7 +72,7 @@ export const GroupDetailView: React.FC<GroupDetailViewProps> = ({ groupSessions,
       await GroupSessionRepository.deleteAllSessionsForGroup(decodedName);
       alert('Grupo eliminado correctamente.');
       navigate('/groups');
-    } catch (error) {
+    } catch {
       alert('Error al eliminar grupo.');
     }
   };

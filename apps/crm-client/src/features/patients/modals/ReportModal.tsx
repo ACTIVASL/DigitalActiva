@@ -60,7 +60,7 @@ export const ReportModal: React.FC<ReportModalProps> = ({
       logActivity('report', `Informe guardado: ${patient.name}`);
       // Close after delay or just let user chose
       setTimeout(onClose, 1500);
-    } catch (error) {
+    } catch {
       setToast({ msg: 'Error al guardar el informe', type: 'error' });
     }
   };

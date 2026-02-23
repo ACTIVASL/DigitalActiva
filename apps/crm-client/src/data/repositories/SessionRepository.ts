@@ -44,20 +44,15 @@ export const SessionRepository = {
       where('date', '<=', endDate),
     );
 
-    try {
-      const snapshot = await getDocs(q);
-      return snapshot.docs.map((d) => {
-        const data = d.data() as Session;
-        // Extract PatientID from path: patients/{patientId}/sessions/{sessionId}
-        // d.ref.parent is 'sessions' collection
-        // d.ref.parent.parent is 'patients/{patientId}' document
-        const patientId = d.ref.parent.parent?.id || 'unknown';
-        return { ...data, id: d.id, patientId };
-      });
-    } catch (error: unknown) {
-      // Index missing or query failed — propagate
-      throw error;
-    }
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((d) => {
+      const data = d.data() as Session;
+      // Extract PatientID from path: patients/{patientId}/sessions/{sessionId}
+      // d.ref.parent is 'sessions' collection
+      // d.ref.parent.parent is 'patients/{patientId}' document
+      const patientId = d.ref.parent.parent?.id || 'unknown';
+      return { ...data, id: d.id, patientId };
+    });
   },
 
   /**
@@ -252,62 +247,58 @@ export const SessionRepository = {
 
     // TITANIUM UPGRADE: Transactional Sync for "Notes" & "Updates"
     // Ensures the legacy array (UI Cache) matches the Subcollection (Source of Truth)
-    try {
-      await runTransaction(db, async (transaction) => {
-        const patientRef = doc(db, 'patients', patientId);
-        const sessionRef = doc(db, 'patients', patientId, 'sessions', sessionId);
+    await runTransaction(db, async (transaction) => {
+      const patientRef = doc(db, 'patients', patientId);
+      const sessionRef = doc(db, 'patients', patientId, 'sessions', sessionId);
 
-        // 1. Read Patient (Blocking)
-        const patientSnap = await transaction.get(patientRef);
-        const sessionSnap = await transaction.get(sessionRef);
+      // 1. Read Patient (Blocking)
+      const patientSnap = await transaction.get(patientRef);
+      const sessionSnap = await transaction.get(sessionRef);
 
-        if (!sessionSnap.exists()) {
-          // Session missing in subcollection — auto-create (heal)
-          transaction.set(
-            sessionRef,
-            {
-              ...data,
-              id: sessionId,
-              userId: auth.currentUser?.uid,
-              healedAt: new Date().toISOString(),
-            },
-            { merge: true },
-          );
+      if (!sessionSnap.exists()) {
+        // Session missing in subcollection — auto-create (heal)
+        transaction.set(
+          sessionRef,
+          {
+            ...data,
+            id: sessionId,
+            userId: auth.currentUser?.uid,
+            healedAt: new Date().toISOString(),
+          },
+          { merge: true },
+        );
+      } else {
+        transaction.update(sessionRef, { ...data, updatedAt: new Date().toISOString() });
+      }
+
+      // 3. Update Legacy Array (Mirror)
+      if (patientSnap.exists()) {
+        const p = patientSnap.data() as Patient;
+        const sessions = p.sessions || [];
+
+        // Find and Splice (Titanium Hardened: Trim whitespace)
+        const index = sessions.findIndex((s) => String(s.id).trim() === String(sessionId).trim());
+
+        if (index !== -1) {
+          // Update existing item
+          sessions[index] = { ...sessions[index], ...data };
+          transaction.update(patientRef, { sessions });
         } else {
-          transaction.update(sessionRef, { ...data, updatedAt: new Date().toISOString() });
+          // RECOVERY MODE: If missing in array, append it (Dual-Write Consistency)
+          // This fixes the "Ghost Session" issue where a session exists in DB but not in UI List.
+          // Session restored to legacy array (heal)
+          sessions.push({ ...data, id: sessionId } as Session);
+          transaction.update(patientRef, { sessions });
         }
+      }
+    });
 
-        // 3. Update Legacy Array (Mirror)
-        if (patientSnap.exists()) {
-          const p = patientSnap.data() as Patient;
-          const sessions = p.sessions || [];
-
-          // Find and Splice (Titanium Hardened: Trim whitespace)
-          const index = sessions.findIndex((s) => String(s.id).trim() === String(sessionId).trim());
-
-          if (index !== -1) {
-            // Update existing item
-            sessions[index] = { ...sessions[index], ...data };
-            transaction.update(patientRef, { sessions });
-          } else {
-            // RECOVERY MODE: If missing in array, append it (Dual-Write Consistency)
-            // This fixes the "Ghost Session" issue where a session exists in DB but not in UI List.
-            // Session restored to legacy array (heal)
-            sessions.push({ ...data, id: sessionId } as Session);
-            transaction.update(patientRef, { sessions });
-          }
-        }
-      });
-
-      // TITANIUM AUDIT: Log Activity
-      await AuditRepository.log('session', 'Sesión Actualizada', {
-        type: 'session',
-        sessionId,
-        patientId,
-      });
-    } catch (e) {
-      throw e;
-    }
+    // TITANIUM AUDIT: Log Activity
+    await AuditRepository.log('session', 'Sesión Actualizada', {
+      type: 'session',
+      sessionId,
+      patientId,
+    });
   },
 
   delete: async (patientId: string, sessionId: string): Promise<void> => {
@@ -332,42 +323,38 @@ export const SessionRepository = {
 
     // TITANIUM UPGRADE: Use Transaction for Atomic Consistency
     // Prevents Race Conditions on the Legacy Array
-    try {
-      await runTransaction(db, async (transaction) => {
-        const patientRef = doc(db, 'patients', patientId);
-        const sessionRef = doc(db, 'patients', patientId, 'sessions', sessionId);
+    await runTransaction(db, async (transaction) => {
+      const patientRef = doc(db, 'patients', patientId);
+      const sessionRef = doc(db, 'patients', patientId, 'sessions', sessionId);
 
-        // 1. Read Patient (Blocking)
-        const patientSnap = await transaction.get(patientRef);
+      // 1. Read Patient (Blocking)
+      const patientSnap = await transaction.get(patientRef);
 
-        // 3. Logic: Update Legacy Array
-        if (patientSnap.exists()) {
-          const p = patientSnap.data() as Patient;
-          const sessions = p.sessions || [];
-          // Filter with Trim Hardening
-          const updatedSessions = sessions.filter(
-            (s) => String(s.id).trim() !== String(sessionId).trim(),
-          );
+      // 3. Logic: Update Legacy Array
+      if (patientSnap.exists()) {
+        const p = patientSnap.data() as Patient;
+        const sessions = p.sessions || [];
+        // Filter with Trim Hardening
+        const updatedSessions = sessions.filter(
+          (s) => String(s.id).trim() !== String(sessionId).trim(),
+        );
 
-          if (updatedSessions.length !== sessions.length) {
-            // Only write if something changed
-            transaction.update(patientRef, { sessions: updatedSessions });
-          }
+        if (updatedSessions.length !== sessions.length) {
+          // Only write if something changed
+          transaction.update(patientRef, { sessions: updatedSessions });
         }
+      }
 
-        // 4. Delete Subcollection Doc (Source of Truth)
-        transaction.delete(sessionRef);
-      });
+      // 4. Delete Subcollection Doc (Source of Truth)
+      transaction.delete(sessionRef);
+    });
 
-      // TITANIUM AUDIT: Log Activity
-      await AuditRepository.log('delete', 'Sesión Eliminada', {
-        type: 'delete',
-        id: sessionId,
-        entity: 'session',
-      });
-    } catch (e) {
-      throw e; // Propagate error so Mutation knows it failed
-    }
+    // TITANIUM AUDIT: Log Activity
+    await AuditRepository.log('delete', 'Sesión Eliminada', {
+      type: 'delete',
+      id: sessionId,
+      entity: 'session',
+    });
   },
 
   /**

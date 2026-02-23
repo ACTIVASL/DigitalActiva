@@ -48,7 +48,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
         if (url) {
           setPhotoPreview(url);
         }
-      } catch (_err) {
+      } catch {
         // Upload hook tracks error state for consumer
       }
     } else if (f) {

@@ -131,8 +131,8 @@ export const GroupSessionModal: React.FC<GroupSessionModalProps> = ({
                       alert('Sesión eliminada.');
                       onClose();
                       window.location.reload();
-                    } catch (e) {
-                      alert('Error al eliminar: ' + (e as Error).message);
+                    } catch {
+                      // Handled globally
                     }
                   }
                 }
@@ -240,10 +240,8 @@ export const GroupSessionModal: React.FC<GroupSessionModalProps> = ({
               // Await the save to catch async errors from App.tsx/Repositories
               const res = onSave(sessionData);
               if (res instanceof Promise) await res;
-            } catch (err) {
-              alert(
-                'Error al guardar sesión: ' + (err instanceof Error ? err.message : String(err)),
-              );
+            } catch {
+              // Form error
             }
           }}
         >

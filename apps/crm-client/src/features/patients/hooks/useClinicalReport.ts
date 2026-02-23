@@ -86,7 +86,7 @@ export const useClinicalReport = () => {
       const filename = `Historia_Clinica_${patient.name.replace(/\s+/g, '_')}.pdf`;
       doc.save(filename);
       // alert(`Informe generado correctamente: ${filename}`); // Optional: Too intrusive?
-    } catch (err) {
+    } catch {
       alert('Error al generar el PDF. Por favor contacte soporte.');
     }
   };

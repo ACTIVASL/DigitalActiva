@@ -74,7 +74,7 @@ export const PatientDetail: React.FC<PatientDetailProps> = ({ patient, onBack, o
 
       await uploadDocument(file, 'consent', metadata); // Pass metadata to repo
       showToast('Firma forense guardada correctamente', 'success');
-    } catch (e) {
+    } catch {
       showToast('Error al guardar firma', 'error');
     }
   };

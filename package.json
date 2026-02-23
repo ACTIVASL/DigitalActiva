@@ -47,7 +47,8 @@
     "ts-jest": "^29.4.6",
     "tsx": "^4.6.2",
     "turbo": "latest",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
   },
   "packageManager": "pnpm@8.15.0",
   "workspaces": [

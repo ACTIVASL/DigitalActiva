@@ -29,7 +29,7 @@ export const SettingsView: React.FC = () => {
     try {
       await updateSettings(formData);
       toastSuccess('Configuración guardada correctamente');
-    } catch (err) {
+    } catch {
       toastError('Error al guardar configuración.');
     }
   };
@@ -163,7 +163,7 @@ export const SettingsView: React.FC = () => {
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
-                  } catch (err) {
+                  } catch {
                     toastError('Error al generar el backup. Inténtelo de nuevo.');
                   }
                 }}

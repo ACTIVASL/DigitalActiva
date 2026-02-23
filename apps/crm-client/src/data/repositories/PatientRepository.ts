@@ -24,25 +24,21 @@ export class PatientRepository {
    * @throws Error if validation fails or patient not found
    */
   static async getById(id: string): Promise<Patient | null> {
-    try {
-      const docRef = doc(db, COLLECTION, id);
-      const snapshot = await getDoc(docRef);
+    const docRef = doc(db, COLLECTION, id);
+    const snapshot = await getDoc(docRef);
 
-      if (!snapshot.exists()) return null;
+    if (!snapshot.exists()) return null;
 
-      const data = snapshot.data();
-      // Runtime Validation: The Data Firewall
-      const parsed = PatientSchema.safeParse({ ...data, id: snapshot.id });
+    const data = snapshot.data();
+    // Runtime Validation: The Data Firewall
+    const parsed = PatientSchema.safeParse({ ...data, id: snapshot.id });
 
-      if (!parsed.success) {
-        // Data Firewall: validation failed but return raw data for resilience
-        return { ...data, id: snapshot.id } as Patient;
-      }
-
-      return parsed.data;
-    } catch (error) {
-      throw error;
+    if (!parsed.success) {
+      // Data Firewall: validation failed but return raw data for resilience
+      return { ...data, id: snapshot.id } as Patient;
     }
+
+    return parsed.data;
   }
 
   /**

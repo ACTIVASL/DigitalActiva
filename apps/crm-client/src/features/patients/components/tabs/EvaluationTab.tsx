@@ -352,7 +352,7 @@ export const EvaluationTab: React.FC<EvaluationTabProps> = ({
       onUpdate({ ...patient, evaluationHistory: updatedHistory });
 
       showToast?.('Informe completo generado y archivado.', 'success');
-    } catch (error) {
+    } catch {
       showToast?.('Error al generar informe.', 'error');
     } finally {
       setUploading(false);
