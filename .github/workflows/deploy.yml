@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  PROJECT_ID: activa-sl-digital
+  PROJECT_ID: activa-sl-corporate
 
 jobs:
   deploy-production:
