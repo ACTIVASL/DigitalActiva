@@ -63,7 +63,7 @@ export interface AgentNodeProfile {
     uptime: number; // Percentage
     notebookLmId: string; // Link to Employee's Knowledge Base
     workspaceSync: boolean; // G-Suite Connection Status
-    mcpTools: string[]; // e.g., ['stripe', 'github', 'jira']
+    nativeTools: string[]; // e.g., ['firestore', 'cloud_functions']
   };
   metrics: {
     tasksCompleted: number;

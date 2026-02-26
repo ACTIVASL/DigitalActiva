@@ -93,12 +93,12 @@ function App() {
 }
 
 const AuthRedirect = () => {
-  window.location.href = 'https://activa-sl-digital.web.app/auth/login';
+  window.location.href = 'https://activa-sl-corporate.web.app/auth/login';
   return null;
 };
 
 const DashboardRedirect = () => {
-  window.location.href = 'https://activa-sl-digital.web.app/dashboard';
+  window.location.href = 'https://activa-sl-corporate.web.app/dashboard';
   return null;
 };
 

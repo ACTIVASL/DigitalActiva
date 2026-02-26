@@ -12,7 +12,7 @@ import {
 
 const logoImg = '/logo-v2.png';
 
-const CRM_URL = 'https://activa-sl-digital.web.app';
+const CRM_URL = 'https://activa-sl-corporate.web.app/auth/login';
 
 export const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);

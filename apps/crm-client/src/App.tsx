@@ -6,7 +6,7 @@ import { AppLayout } from '@/layout/AppLayout';
 import { ErrorBoundary, CommandMenu, OfflineIndicator, toast } from '@monorepo/ui-system';
 
 // AUTH
-import { LoginViewV2 as LoginView } from '@monorepo/engine-auth';
+import { LoginView } from '@monorepo/engine-auth';
 import { useAuth } from './context/AuthContext';
 
 // ROUTES
@@ -14,6 +14,9 @@ import { AppRouter } from './routes/AppRouter';
 
 // MODALS
 import { GlobalModals } from './features/modals/GlobalModals';
+
+// ATOM CHAT
+import { AtomChatWidget } from './components/AtomChatWidget';
 
 // HOOKS (Extracted from God Component)
 import { useGroupSessions } from './hooks/useGroupSessions';
@@ -149,6 +152,7 @@ function App() {
       />
       <CommandMenu />
       <OfflineIndicator />
+      <AtomChatWidget />
     </ErrorBoundary>
   );
 }

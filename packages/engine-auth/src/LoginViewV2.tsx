@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
     getAuth,
     signInWithPopup,
@@ -13,97 +13,50 @@ import { PremiumBackground } from '@monorepo/ui-system';
 import { ArrowRight } from 'lucide-react';
 import logoTitanium from './assets/logo-titanium.png';
 
-// --- V2: BARE METAL AUTH ---
+// --- BARE METAL AUTH ---
 // No hooks, no abstractions. Direct SDK calls.
 
 export const LoginViewV2 = () => {
-    const [status, setStatus] = useState<string>('Ready');
-    const [logs, setLogs] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
-
-    // Add log helper
-    const addLog = (msg: string) => {
-        const time = new Date().toLocaleTimeString();
-        setLogs(prev => [`[${time}] ${msg}`, ...prev].slice(0, 8));
-    };
-
-    // 1. Initial Diagnostics
-    useEffect(() => {
-        const auth = getAuth(app);
-        addLog(`System Init. SDK: v${import.meta.env.VITE_FIREBASE_API_KEY ? 'OK' : 'MISSING'}`);
-        addLog(`ApiKey: ${import.meta.env.VITE_FIREBASE_API_KEY?.slice(0, 6)}...`);
-        addLog(`Auth Domain: ${auth.config.authDomain}`);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     const handleGoogleLogin = async () => {
         if (loading) return;
-
         setLoading(true);
-        setStatus('Initializing...');
-        addLog('--- STARTING AUTH SEQUENCE ---');
 
         try {
             const auth = getAuth(app);
-            addLog('1. Auth Instance: OK');
-
-            // A. Persistence
-            addLog('2. Setting Persistence...');
             await setPersistence(auth, browserLocalPersistence);
-            addLog('Persistence: LOCAL');
 
-            // B. Provider
             const provider = new GoogleAuthProvider();
             provider.setCustomParameters({ prompt: 'select_account' });
-            addLog('3. Provider Configered (Select Account)');
-
-            // C. Popup
-            setStatus('Waiting for User...');
-            addLog('4. Opening Popup...');
 
             const result = await signInWithPopup(auth, provider);
 
-            // D. Success
             if (result.user) {
-                setStatus('SUCCESS');
-                addLog(`5. SUCCESS! User: ${result.user.email}`);
-                addLog('Reloading in 2s...');
-
                 setTimeout(() => {
-                    window.location.reload(); // Hard reload to force app state sync
-                }, 1500);
+                    window.location.reload();
+                }, 500);
             }
 
         } catch (err: unknown) {
-            setStatus('FAILED');
-
             let code = 'unknown';
             let msg = 'An unknown error occurred';
 
-            // Safe extraction for standard JS errors and Firebase errors
             if (err && typeof err === 'object' && 'code' in err && 'message' in err) {
                 const fErr = err as { code: string; message: string };
                 code = fErr.code;
                 msg = fErr.message;
             } else if (err instanceof Error) {
                 msg = err.message;
-            } else if (typeof err === 'string') {
-                msg = err;
             }
-
-            addLog(`ERROR: ${code}`);
-            addLog(`MSG: ${msg}`);
 
             if (code === 'auth/popup-blocked') {
                 alert('EL NAVEGADOR BLOQUEÓ LA VENTANA. Por favor habilita popups para este sitio.');
-            } else if (code === 'auth/popup-closed-by-user') {
-                addLog('User closed popup.');
-            } else {
+            } else if (code !== 'auth/popup-closed-by-user') {
                 alert(`Error Login: ${code} - ${msg}`);
             }
         } finally {
             setLoading(false);
-            if (status !== 'SUCCESS') setStatus('Ready');
         }
     };
 
@@ -115,14 +68,14 @@ export const LoginViewV2 = () => {
 
                 {/* HEADER */}
                 <div className="flex flex-col items-center mb-8">
-                    <div className="w-20 h-20 mb-4 rounded-full border-2 border-brand-primary overflow-hidden shadow-[0_0_20px_rgba(59,130,246,0.5)]">
+                    <div className="w-20 h-20 mb-4 rounded-full border-2 border-brand-primary overflow-hidden shadow-[0_0_20px_rgba(59,130,246,0.5)] bg-white">
                         <img src={logoTitanium} className="w-full h-full object-cover scale-110" alt="Logo" />
                     </div>
                     <h2 className="text-2xl font-bold text-white tracking-tight">ACTIVA S.L.</h2>
-                    <p className="text-xs font-bold text-cyan-400 tracking-[0.3em] mt-1">SISTEMA REINICIADO (V2)</p>
+                    <p className="text-xs font-bold text-slate-400 tracking-widest mt-1">SISTEMA CORPORATIVO</p>
                 </div>
 
-                {/* --- THE BUTTON (REDESIGNED) --- */}
+                {/* --- THE BUTTON --- */}
                 <div className="space-y-6">
                     <div className="relative group">
                         <div className={`absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-xl opacity-75 blur transition duration-200 ${loading ? 'animate-pulse' : ''}`}></div>
@@ -143,20 +96,6 @@ export const LoginViewV2 = () => {
                             <ArrowRight className={`text-slate-500 group-hover:text-white transition-transform ${loading ? 'opacity-0' : 'group-hover:translate-x-1'}`} />
                         </button>
                     </div>
-                </div>
-
-                {/* --- FORENSIC TERMINAL (ALWAYS VISIBLE) --- */}
-                <div className="mt-8 p-4 bg-black/80 rounded-xl border border-slate-800 font-mono text-[10px] text-green-500/80 h-40 overflow-y-auto custom-scrollbar shadow-inner">
-                    <div className="flex justify-between border-b border-slate-800 pb-1 mb-2">
-                        <span className="font-bold text-green-400">TERMINAL DE ACCESO</span>
-                        <span className="text-slate-500">{status}</span>
-                    </div>
-                    {logs.map((log, i) => (
-                        <div key={i} className="mb-1 border-l-2 border-transparent hover:border-green-500/50 pl-1">
-                            {log}
-                        </div>
-                    ))}
-                    {logs.length === 0 && <span className="opacity-30">Waiting for interaction...</span>}
                 </div>
 
             </div>

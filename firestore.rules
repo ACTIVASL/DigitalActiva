@@ -40,6 +40,13 @@ service cloud.firestore {
       allow read, write: if isOwner(userId);
     }
 
+    // --- ATOM CHAT BRIDGE ---
+    match /chats/{userId} {
+      match /messages/{messageId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+
     // --- PATIENTS ---
     match /patients/{patientId} {
       allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;

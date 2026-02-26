@@ -122,5 +122,3 @@ export const searchNotes = onCall(FUNCTION_OPTS, async (request) => {
 
 export * from './neuralAudit';
 export * from './memoryQuery';
-export * from './mcp';
-
