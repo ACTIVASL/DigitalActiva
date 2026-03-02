@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { Bot, X, Send, ShieldCheck, User } from 'lucide-react';
-import { db, auth } from '@monorepo/engine-auth';
+import { db, auth, functions } from '@monorepo/engine-auth';
 import { collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, Timestamp } from 'firebase/firestore';
+import { httpsCallable } from 'firebase/functions';
 
 interface ChatMessage {
     id: string;
@@ -22,11 +23,10 @@ export function AtomChatWidget() {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
-    // --- ATOM COMMAND BRIDGE ---
-    const permissionsRef = useRef(permissionsGranted);
-    useEffect(() => { permissionsRef.current = permissionsGranted; }, [permissionsGranted]);
-    const lastProcessedRef = useRef<string | null>(null);
-
+    // --- ATOM COMMAND BRIDGE (PURGADO - POLÍTICA ZERO-DOM 10/10) ---
+    // La IA ya no tiene permiso para manipular el DOM (`eval`, `click`).
+    // El frontend es estrictamente REACTIVO a los cambios que Súper Atom
+    // hace directamente en Firestore vía los Endpoints M2M.
     useEffect(() => {
         (window as any).AtomBridge = {
             sendSystemMessage: async (text: string) => {
@@ -40,47 +40,17 @@ export function AtomChatWidget() {
                     });
                 } catch (e) { console.error(e); }
             },
-            getPageContent: () => document.body.innerText.substring(0, 5000),
+            getPageContent: () => {
+                console.warn("[ZERO-DOM POLICY] La IA intentó leer el DOM. Denegado.");
+                return "ACCESO DENEGADO. LEY ANTI-RPA ACTIVA. LEE DIRECTAMENTE DE FIRESTORE.";
+            },
             clickElement: (selector: string) => {
-                const el = document.querySelector(selector) as HTMLElement;
-                if (el) { el.click(); return "Clicked " + selector; }
-                return "Element not found: " + selector;
+                console.warn(`[ZERO-DOM POLICY] La IA intentó clicar: ${selector}. Denegado.`);
+                return "ACCESO DENEGADO. MUTACIONES SOLO POR API M2M.";
             }
         };
     }, []);
-
-    useEffect(() => {
-        const lastMsg = messages[messages.length - 1];
-        if (!lastMsg || lastMsg.sender !== 'atom' || lastMsg.id === lastProcessedRef.current) return;
-
-        lastProcessedRef.current = lastMsg.id;
-        const text = lastMsg.text;
-
-        if (text.includes('[CMD:NAV]')) {
-            const route = text.split('[CMD:NAV]')[1].trim();
-            window.location.href = route;
-        } else if (text.includes('[CMD:CLICK]')) {
-            const selector = text.split('[CMD:CLICK]')[1].trim();
-            const el = document.querySelector(selector) as HTMLElement;
-            if (el) el.click();
-        } else if (text.includes('[CMD:EVAL]')) {
-            if (!permissionsRef.current) {
-                (window as any).AtomBridge?.sendSystemMessage("ALERTA: Atom intentó ejecutar código pero no tiene permisos corporativos.");
-                return;
-            }
-            const script = text.split('[CMD:EVAL]')[1].trim();
-            try {
-                // eslint-disable-next-line no-eval
-                const result = eval(script);
-                if (result !== undefined) {
-                    (window as any).AtomBridge?.sendSystemMessage(String(result));
-                }
-            } catch (e: any) {
-                (window as any).AtomBridge?.sendSystemMessage("Error de ejecución: " + e.message);
-            }
-        }
-    }, [messages]);
-    // ---------------------------
+    // ---------------------------------------------------------------
 
     useEffect(() => {
         if (!isOpen) return;
@@ -191,17 +161,30 @@ export function AtomChatWidget() {
 
         try {
             const messagesRef = collection(db, 'chats', uid, 'messages');
+            // 1. Inserción de la orden Humana
             await addDoc(messagesRef, {
                 text: text,
                 sender: 'user',
                 timestamp: serverTimestamp()
             });
-        } catch (e) {
-            console.error("Send failed", e);
+
+            // 2. Invocación Nativa a la Mente Orquestadora (Cloud Function)
+            const callCeoAgent = httpsCallable(functions, 'ceoAgent');
+            const result = await callCeoAgent({ message: text });
+
+            // 3. Respuesta de confirmación en el Chat
+            await addDoc(messagesRef, {
+                text: (result.data as any).reply || "Orden procesada por el departamento táctico.",
+                sender: 'atom',
+                timestamp: serverTimestamp()
+            });
+
+        } catch (e: any) {
+            console.error("Fallo en el enlace con ceoAgent:", e);
             setMessages(prev => [...prev, {
                 id: Date.now().toString(),
                 sender: 'system',
-                text: 'Error al enviar el mensaje a la Nube.',
+                text: `[ERROR M2M]: Enlace roto con el Orquestador. Detalle: ${e.message}`,
                 timestamp: new Date()
             }]);
         }

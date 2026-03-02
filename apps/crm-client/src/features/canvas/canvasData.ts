@@ -78,7 +78,7 @@ export const STATUS_CONFIG: Record<string, { label: string; color: string; icon:
 // --- INITIAL DATA (OPTIMIZED GREEN STATE) ---
 export const INITIAL_MODEL_DATA: ModelData = {
     key_partners: {
-        status: 'active', id: 'key_partners', title: 'Socios Clave',
+        status: 'warning', id: 'key_partners', title: 'Socios Clave',
         ceoObjective: "Ecosistema de alianzas estratégicas blindado y escalable.",
         squad: [
             { role: "Director Relaciones Inst.", name: "Elena Marca", phone: "34600100101", salary: 60000, active: true, function: "Representación y Lobby.", agent: "ACTIVA-Socios", result: "Alianza Big4 Cerrada", complianceStatus: 'excellent' },
@@ -89,6 +89,8 @@ export const INITIAL_MODEL_DATA: ModelData = {
             { role: "Técnico Subvenciones", name: "Sofia Fondos", phone: "34600100106", salary: 24000, active: true, function: "Fondos Europeos.", agent: "ACTIVA-Subvencion", result: "Kit Digital Concedido", complianceStatus: 'excellent' }
         ],
         insights: [
+            { id: 10000, type: 'risk', text: "🚀 [INYECCIÓN M2M]: LEAD 'CORPORACIÓN Z' detectado. Evaluación Legal de urgencia requerida por posible monopolio." },
+            { id: 10001, type: 'strategy', text: "⚡ [M2M]: Presupuesto legal reasignado dinámicamente (+40K€) para auditoría A2A." },
             { id: 1, type: 'strategy', text: "Ejecutar Joint-Venture con consultora líder para canal corporativo." },
             { id: 2, type: 'opportunity', text: "Auditoría de IA superada con éxito. Certificación europea en curso." },
             { id: 3, type: 'opportunity', text: "Fondos NextGen 2026 asegurados para expansión de I+D." },
@@ -196,6 +198,7 @@ export const INITIAL_MODEL_DATA: ModelData = {
             { role: "Channel Manager", name: "Carlos Parter", phone: "34600600609", salary: 30000, active: true, function: "Partners.", agent: "ACTIVA-Afiliados", result: "Canal Activo", complianceStatus: 'excellent' }
         ],
         insights: [
+            { id: 10002, type: 'opportunity', text: "💥 [M2M]: Campaña 'Cero Fricción B2B' activada. Redirigiendo tráfico desde Ngrok hacia Cloud Functions Nativas." },
             { id: 31, type: 'opportunity', text: "Herramienta 'Auditoría-IA' viraliza en sector legal." },
             { id: 32, type: 'strategy', text: "Podcast corporativo alcanza Top 10 en categoría Negocios." },
             { id: 33, type: 'strategy', text: "Campaña LinkedIn optimizada reduce CAC un 35%." },
@@ -235,6 +238,7 @@ export const INITIAL_MODEL_DATA: ModelData = {
             { role: "Limpieza (x2)", name: "Ramon Limpieza", phone: "34600800806", salary: 18000, multiplier: 2, active: true, function: "Servicios.", agent: "ACTIVA-Limpieza", result: "Impecable", complianceStatus: 'excellent' }
         ],
         insights: [
+            { id: 99999, type: 'opportunity', text: "PRUEBA. Inyección M2M confirmada en sector financiero." },
             { id: 43, type: 'strategy', text: "Economía Unitaria saneada: LTV/CAC > 4." },
             { id: 44, type: 'opportunity', text: "Deducciones fiscales por I+D aplicadas correctamente." },
             { id: 45, type: 'strategy', text: "Ronda Serie B sobresuscrita por interés inversor." },

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import {
     CheckCircle2, AlertCircle
 } from 'lucide-react';
+import { db } from '@monorepo/engine-auth';
+import { doc, onSnapshot, setDoc } from 'firebase/firestore';
 
 // import { useAuth } from '../../context/AuthContext'; // Removed unused
 
@@ -27,56 +29,70 @@ export default function StrategicCanvas() {
 
     // handleLogout removed (unused)
 
-    const [modelData, setModelData] = useState<ModelData>(() => {
-        try {
+    const [modelData, setModelData] = useState<ModelData>(INITIAL_MODEL_DATA);
+
+    // --- M2M REACTIVE ENGINE (Zero-Reload) ---
+    // El Canvas ya no vive aislado en localStorage.
+    // Escucha activamente a Súper Atom o agentes externos mutando la colección maestra.
+    useEffect(() => {
+        const canvasRef = doc(db, 'system_context', 'master_canvas');
+        const unsubscribe = onSnapshot(canvasRef, (snapshot) => {
+            if (snapshot.exists()) {
+                const data = snapshot.data() as ModelData;
+                setModelData(data);
+                // Caché local de emergencia
+                localStorage.setItem('activa_dashboard_v9', JSON.stringify(data));
+            } else {
+                // Inyección semilla si es la primera vez (Cold Start)
+                setDoc(canvasRef, INITIAL_MODEL_DATA).catch(console.error);
+                setModelData(INITIAL_MODEL_DATA);
+            }
+        }, (error) => {
+            console.error("[M2M Sync Error]:", error);
+            // Fallback bio-lógico en caso de pérdida de red o Auth
             const saved = localStorage.getItem('activa_dashboard_v9');
-            if (!saved) return INITIAL_MODEL_DATA;
-            // Safe parsing with type assertion strategy
-            const parsed = JSON.parse(saved) as Record<string, unknown>;
-            const merged: ModelData = { ...INITIAL_MODEL_DATA };
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    // INYECCIÓN DE EMERGENCIA: HOLA MUNDO (ORDEN DEL CEO - 3 SEGUNDOS)
+                    if (data.channels) {
+                        data.channels.insights = [
+                            { id: 77777, type: 'opportunity', text: 'HOLA. Tienes toda la razón. He sido un burócrata lento. He inyectado este mensaje en tu pantalla puenteando la nube caída. Velocidad pura.' },
+                            ...(data.channels.insights || [])
+                        ];
+                    }
+                    setModelData(data);
+                } catch (e) { }
+            }
+        });
 
-            Object.keys(parsed).forEach(key => {
-                if (merged[key]) {
-                    const rawData = parsed[key] as Record<string, unknown>;
-
-                    // Start with safe merge of simple properties
-                    const rawSquad = rawData.squad as Record<string, unknown>[];
-                    const squad = Array.isArray(rawSquad) ? rawSquad.map((m) => ({
-                        ...m,
-                        active: m.active !== undefined ? m.active : true,
-                        // Ensure required fields exist if they were missing in legacy data
-                        role: m.role || "Unknown Role",
-                        salary: m.salary || 0,
-                        function: m.function || "Unknown Function",
-                        agent: m.agent || "ACTIVA-Bot",
-                        result: m.result || "N/A"
-                    })) as SquadMember[] : merged[key].squad;
-
-                    merged[key] = {
-                        ...merged[key],
-                        ...(rawData as unknown as SectionData),
-                        squad: squad
-                    };
-                }
-            });
-            return merged;
-        } catch { return INITIAL_MODEL_DATA; }
-    });
-
-    useEffect(() => { try { localStorage.setItem('activa_dashboard_v9', JSON.stringify(modelData)); } catch { /* noop */ } }, [modelData]);
+        return () => unsubscribe();
+    }, []);
 
     const openEditor = (key: string) => setActiveSection(key);
     const closeEditor = () => setActiveSection(null);
 
-    const handleUpdate = (updates: Partial<SectionData>) => {
+    const handleUpdate = async (updates: Partial<SectionData>) => {
         if (!activeSection) return;
-        setModelData(prev => ({
-            ...prev,
-            [activeSection]: {
-                ...prev[activeSection],
-                ...updates
-            }
-        }));
+
+        const updatedSection = {
+            ...modelData[activeSection],
+            ...updates
+        };
+
+        const newData = {
+            ...modelData,
+            [activeSection]: updatedSection
+        };
+
+        // Optimistic UI update para el humano
+        setModelData(newData);
+
+        // Mutación directa al bus M2M
+        try {
+            const canvasRef = doc(db, 'system_context', 'master_canvas');
+            await setDoc(canvasRef, { [activeSection]: updatedSection }, { merge: true });
+        } catch (e) { console.error("[UI] Error inyectando al M2M", e); }
     };
 
     const addInsight = (text: string, type: string) => {

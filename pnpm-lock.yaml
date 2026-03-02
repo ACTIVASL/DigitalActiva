@@ -258,6 +258,9 @@ importers:
       '@genkit-ai/googleai':
         specifier: ^0.5.17
         version: 0.5.17(@genkit-ai/ai@0.5.17)(@genkit-ai/core@0.5.17)
+      '@google/generative-ai':
+        specifier: ^0.24.1
+        version: 0.24.1
       '@modelcontextprotocol/sdk':
         specifier: ^0.6.0
         version: 0.6.1
@@ -3445,6 +3448,11 @@ packages:
 
   /@google/generative-ai@0.16.1:
     resolution: {integrity: sha512-t4x4g0z/HT2BdBNfK2ua2xA/Az+SDFng4PxWjgiys/qxbh2YcrCI2rZg9/6eBkd4Iz41yjpCCDOWxsMryLJ7TA==}
+    engines: {node: '>=18.0.0'}
+    dev: false
+
+  /@google/generative-ai@0.24.1:
+    resolution: {integrity: sha512-MqO+MLfM6kjxcKoy0p1wRzG3b4ZZXtPI+z2IE26UogS2Cm/XHO+7gGRBh6gcJsOiIVoH93UwKvW4HdgiOZCy9Q==}
     engines: {node: '>=18.0.0'}
     dev: false
 

@@ -1,0 +1,83 @@
+{
+    "key_partners": {
+        "insights": [
+            {
+                "id": 101,
+                "type": "opportunity",
+                "text": "HOLA"
+            }
+        ]
+    },
+    "key_activities": {
+        "insights": [
+            {
+                "id": 102,
+                "type": "opportunity",
+                "text": "HOLA"
+            }
+        ]
+    },
+    "key_resources": {
+        "insights": [
+            {
+                "id": 103,
+                "type": "opportunity",
+                "text": "HOLA"
+            }
+        ]
+    },
+    "value_propositions": {
+        "insights": [
+            {
+                "id": 104,
+                "type": "opportunity",
+                "text": "HOLA"
+            }
+        ]
+    },
+    "customer_relationships": {
+        "insights": [
+            {
+                "id": 105,
+                "type": "opportunity",
+                "text": "HOLA"
+            }
+        ]
+    },
+    "channels": {
+        "insights": [
+            {
+                "id": 106,
+                "type": "opportunity",
+                "text": "HOLA"
+            }
+        ]
+    },
+    "customer_segments": {
+        "insights": [
+            {
+                "id": 107,
+                "type": "opportunity",
+                "text": "HOLA"
+            }
+        ]
+    },
+    "cost_structure": {
+        "insights": [
+            {
+                "id": 108,
+                "type": "opportunity",
+                "text": "HOLA"
+            }
+        ]
+    },
+    "revenue_streams": {
+        "insights": [
+            {
+                "id": 109,
+                "type": "opportunity",
+                "text": "HOLA"
+            }
+        ]
+    }
+}
