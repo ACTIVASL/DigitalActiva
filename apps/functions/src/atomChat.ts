@@ -17,6 +17,7 @@ export const ceoAgent = onCall({
     memory: '1GiB',
     timeoutSeconds: 300,
     cors: true,
+    invoker: 'public',
 }, async (request) => {
     // 1. Verificación de Autenticación (Seguridad B2B Obligatoria)
     if (!request.auth) {
@@ -82,6 +83,7 @@ export const salesAgent = onCall({
     region: 'europe-west1',
     memory: '512MiB',
     cors: true,
+    invoker: 'public',
 }, async (request) => {
     // Boilerplate preparatorio para la Fuerza de Ventas Automática
     return {
@@ -99,6 +101,7 @@ export const opsAgent = onCall({
     region: 'europe-west1',
     memory: '512MiB',
     cors: true,
+    invoker: 'public',
 }, async (request) => {
     // Boilerplate preparatorio para el Auditor Interno
     return {
