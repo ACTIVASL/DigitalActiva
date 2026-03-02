@@ -7,6 +7,7 @@ const FUNCTION_OPTS: HttpsOptions = {
     memory: '256MiB', // Bajo consumo, alta velocidad M2M
     timeoutSeconds: 30, // Corto: operaciones atómicas
     cors: true,
+    invoker: 'public', // Permite que cloud_strike (un script externo) llame a la función sin auth IAM GCP
 };
 
 // --- VALIDACIÓN DE ENTRADA BASE ---
