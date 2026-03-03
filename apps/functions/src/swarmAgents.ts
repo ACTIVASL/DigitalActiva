@@ -1,15 +1,8 @@
-import { onCall, HttpsOptions } from 'firebase-functions/v2/https';
 import { getFirestore, FieldValue } from 'firebase-admin/firestore';
+import { onDocumentCreated } from 'firebase-functions/v2/firestore';
 import { z } from 'zod';
 
-const FUNCTION_OPTS: HttpsOptions = {
-    region: 'europe-west1',
-    memory: '256MiB', // Bajo consumo, alta velocidad M2M
-    timeoutSeconds: 30, // Corto: operaciones atómicas
-    cors: true,
-    invoker: 'public', // Permite que cloud_strike (un script externo) llame a la función sin auth IAM GCP
-    maxInstances: 1, // EVITA "Quota exceeded for CPU per project per region"
-};
+// Configuración común eliminada ya que onDocumentCreated recibe su propia config.
 
 // --- VALIDACIÓN DE ENTRADA BASE ---
 const AgentPayloadSchema = z.object({
@@ -25,10 +18,20 @@ const AgentPayloadSchema = z.object({
  */
 
 const createAgentPort = (departmentId: string, agentName: string) => {
-    return onCall(FUNCTION_OPTS, async (request) => {
-        console.log(`[FIREBASE_CACHE_BUSTER] V2 Public Invoker Online: ${agentName} // M2M`);
-        // En un entorno de Producción Enterprise, se valida if (!request.auth) o token
-        const data = request.data;
+    return onDocumentCreated({
+        document: `m2m_tickets_${departmentId}/{ticketId}`,
+        region: 'europe-west1',
+        memory: '256MiB',
+        timeoutSeconds: 30,
+        maxInstances: 1
+    }, async (event) => {
+        console.log(`[EVENTARC] V2 Asynchronous Port Online: ${agentName} // M2M`);
+
+        const snapshot = event.data;
+        if (!snapshot) return;
+
+        const data = snapshot.data();
+        if (data.status === 'COMPLETED' || data.status === 'ERROR') return; // Evitar reconsumos
 
         try {
             // Pilar 3: Blindaje Zod
@@ -51,13 +54,20 @@ const createAgentPort = (departmentId: string, agentName: string) => {
                 });
 
                 await canvasRef.update(updatePayload);
-                return { success: true, message: `[${agentName}] Insight inyectado en ${departmentId}`, insightId };
-            }
 
-            return { success: false, error: 'Acción M2M no soportada' };
+                // Finalizamos el ticket asíncrono
+                await snapshot.ref.update({
+                    status: 'COMPLETED',
+                    message: `[${agentName}] Insight inyectado en ${departmentId}`,
+                    insightId: insightId,
+                    completedAt: FieldValue.serverTimestamp()
+                });
+            } else {
+                await snapshot.ref.update({ status: 'ERROR', error: 'Acción M2M no soportada' });
+            }
         } catch (error: any) {
             console.error(`[M2M Error] Port ${agentName}:`, error);
-            throw new Error(`[M2M_REJECTED] Payload Formatting Error: ${error.message}`);
+            await snapshot.ref.update({ status: 'ERROR', error: `[M2M_REJECTED]: ${error.message}` });
         }
     });
 };
