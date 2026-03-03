@@ -8,6 +8,7 @@ const FUNCTION_OPTS: HttpsOptions = {
     timeoutSeconds: 30, // Corto: operaciones atómicas
     cors: true,
     invoker: 'public', // Permite que cloud_strike (un script externo) llame a la función sin auth IAM GCP
+    maxInstances: 1, // EVITA "Quota exceeded for CPU per project per region"
 };
 
 // --- VALIDACIÓN DE ENTRADA BASE ---
@@ -25,6 +26,7 @@ const AgentPayloadSchema = z.object({
 
 const createAgentPort = (departmentId: string, agentName: string) => {
     return onCall(FUNCTION_OPTS, async (request) => {
+        console.log(`[FIREBASE_CACHE_BUSTER] V2 Public Invoker Online: ${agentName} // M2M`);
         // En un entorno de Producción Enterprise, se valida if (!request.auth) o token
         const data = request.data;
 
@@ -63,28 +65,28 @@ const createAgentPort = (departmentId: string, agentName: string) => {
 // --- LA MATRIZ DE LOS 9 DEPARTAMENTOS ---
 
 // 1. Dpto. Legal y Alianzas (Socios Clave)
-export const agentLegal = createAgentPort('key_partners', 'ACTIVA-Legal');
+export const agentLegalV2 = createAgentPort('key_partners', 'ACTIVA-Legal');
 
 // 2. Dpto. Operaciones y Calidad (Actividades Clave)
-export const agentOps = createAgentPort('key_activities', 'ACTIVA-Ops');
+export const agentOpsV2 = createAgentPort('key_activities', 'ACTIVA-Ops');
 
 // 3. Dpto. Tecnología y RRHH (Recursos Clave)
-export const agentTech = createAgentPort('key_resources', 'ACTIVA-Tech');
+export const agentTechV2 = createAgentPort('key_resources', 'ACTIVA-Tech');
 
 // 4. Dpto. Producto e I+D (Propuestas de Valor)
-export const agentProduct = createAgentPort('value_propositions', 'ACTIVA-Product');
+export const agentProductV2 = createAgentPort('value_propositions', 'ACTIVA-Product');
 
 // 5. Dpto. Atención al Cliente (Relaciones)
-export const agentSupport = createAgentPort('customer_relationships', 'ACTIVA-Support');
+export const agentSupportV2 = createAgentPort('customer_relationships', 'ACTIVA-Support');
 
 // 6. Dpto. de Marketing (Canales)
-export const agentMarketing = createAgentPort('channels', 'ACTIVA-Marketing');
+export const agentMarketingV2 = createAgentPort('channels', 'ACTIVA-Marketing');
 
 // 7. Dpto. Comercial y Ventas (Segmentos)
-export const agentSales = createAgentPort('customer_segments', 'ACTIVA-Sales');
+export const agentSalesV2 = createAgentPort('customer_segments', 'ACTIVA-Sales');
 
 // 8. Dpto. Financiero (Estructura de Costes)
-export const agentFinance = createAgentPort('cost_structure', 'ACTIVA-Finance');
+export const agentFinanceV2 = createAgentPort('cost_structure', 'ACTIVA-Finance');
 
 // 9. Dirección General (Flujos de Ingresos y Estrategia Global)
-export const agentDirector = createAgentPort('revenue_streams', 'ACTIVA-DireccionCore');
+export const agentDirectorV2 = createAgentPort('revenue_streams', 'ACTIVA-DireccionCore');

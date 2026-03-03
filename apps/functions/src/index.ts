@@ -15,6 +15,7 @@ const FUNCTION_OPTS: HttpsOptions = {
     memory: '1GiB',
     timeoutSeconds: 60,
     cors: true,
+    maxInstances: 1,
 };
 
 /**
@@ -24,6 +25,7 @@ const FUNCTION_OPTS: HttpsOptions = {
 export const embedNote = onDocumentWritten({
     document: "daily_notes/{noteId}",
     region: "europe-west1",
+    maxInstances: 1,
     // We want this to be fast/background
 }, async (event) => {
     if (!event.data) return;

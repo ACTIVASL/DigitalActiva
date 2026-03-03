@@ -18,6 +18,7 @@ export const ceoAgent = onCall({
     timeoutSeconds: 300,
     cors: true,
     invoker: 'public',
+    maxInstances: 1,
 }, async (request) => {
     // 1. Verificación de Autenticación (Seguridad B2B Obligatoria)
     if (!request.auth) {
@@ -78,12 +79,13 @@ OpenClaw y MCP han sido erradicados ("Operación Pureza"). Eres puro código nat
 /**
  * salesAgent: Sub-agente de primera línea para ventas y cualificación (Gema)
  */
-export const salesAgent = onCall({
+export const salesAgentV2 = onCall({
     secrets: [geminiApiKeyExterior],
     region: 'europe-west1',
     memory: '512MiB',
     cors: true,
     invoker: 'public',
+    maxInstances: 1,
 }, async (request) => {
     // Boilerplate preparatorio para la Fuerza de Ventas Automática
     return {
@@ -96,12 +98,13 @@ export const salesAgent = onCall({
 /**
  * opsAgent: Sub-agente para operaciones internas, auditorías y control QA
  */
-export const opsAgent = onCall({
+export const opsAgentV2 = onCall({
     secrets: [geminiApiKeyInternal],
     region: 'europe-west1',
     memory: '512MiB',
     cors: true,
     invoker: 'public',
+    maxInstances: 1,
 }, async (request) => {
     // Boilerplate preparatorio para el Auditor Interno
     return {

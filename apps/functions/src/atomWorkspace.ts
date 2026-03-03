@@ -21,10 +21,11 @@ const VALID_AGENTS: Record<string, { role: string; accessLevel: number }> = {
     'Bearer CLAUDE_OPUS_TECH': { role: 'APP_ENGINEER', accessLevel: 80 }
 };
 
-export const m2mRouter = onRequest({
+export const m2mRouterV2 = onRequest({
     region: 'europe-west1',
     cors: true,
-    memory: '256MiB'
+    memory: '256MiB',
+    maxInstances: 1
 }, async (req, res) => {
     const startObj = Date.now();
 
@@ -58,7 +59,7 @@ export const m2mRouter = onRequest({
             _m2m_metadata: {
                 agent_role: agentMeta.role,
                 source_identity: _audit_meta.source_agent || "UNKNOWN_AI",
-                confidence: _audit_meta.confidence_score || 0.0,
+                confidence: _audit_meta.confidence_score || 1.0,
                 injectedAt: admin.firestore.FieldValue.serverTimestamp(),
                 executionTimeMs: _audit_meta.execution_time_ms || 0
             },
@@ -89,18 +90,7 @@ export const m2mRouter = onRequest({
             return;
         }
 
-        let docRef;
-        const auditPayload = {
-            ...payload,
-            _m2m_metadata: {
-                agent_role: agentMeta.role,
-                source_identity: _audit_meta.source_agent || "UNKNOWN_AI",
-                confidence: _audit_meta.confidence_score || 1.0,
-                injectedAt: admin.firestore.FieldValue.serverTimestamp(),
-                executionTimeMs: _audit_meta.execution_time_ms || 0
-            },
-            status: payload.status || 'ready' // El Dashboard reactivo de Front escucha esto
-        };
+        // Variables ya inicializadas y blindadas en el scope superior
 
         // 3. Enrutamiento Crítico (Basado puramente en colecciones Firestore)
         if (action === "CREATE") {
