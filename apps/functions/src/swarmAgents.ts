@@ -1,6 +1,10 @@
 import { getFirestore, FieldValue } from 'firebase-admin/firestore';
 import { onDocumentCreated } from 'firebase-functions/v2/firestore';
+import { defineSecret } from 'firebase-functions/params';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { z } from 'zod';
+
+const geminiApiKeyInternal = defineSecret('GEMINI_API_KEY_INTERNAL');
 
 // Configuración común eliminada ya que onDocumentCreated recibe su propia config.
 
@@ -21,6 +25,7 @@ const createAgentPort = (departmentId: string, agentName: string) => {
     return onDocumentCreated({
         document: `m2m_tickets_${departmentId}/{ticketId}`,
         region: 'europe-west1',
+        secrets: [geminiApiKeyInternal],
         memory: '256MiB',
         timeoutSeconds: 30,
         maxInstances: 1
@@ -45,12 +50,38 @@ const createAgentPort = (departmentId: string, agentName: string) => {
                 const insightId = Date.now();
                 const updatePayload: Record<string, any> = {};
 
-                // Actualización anidada
+                // Generación de Embeddings (Memoria a Largo Plazo - Zero Cost RAG)
+                let vectorData: number[] = [];
+                try {
+                    const apiKey = geminiApiKeyInternal.value();
+                    if (apiKey) {
+                        const genAI = new GoogleGenerativeAI(apiKey);
+                        const embeddingModel = genAI.getGenerativeModel({ model: "text-embedding-004" });
+                        const result = await embeddingModel.embedContent(parsed.payload.text);
+                        vectorData = result.embedding.values;
+
+                        // Guardado Atómico en Vector Database Nativa
+                        await db.collection('m2m_memory').add({
+                            text: parsed.payload.text,
+                            departmentId: departmentId,
+                            sourceAgent: agentName,
+                            embedding: FieldValue.vector(vectorData),
+                            createdAt: FieldValue.serverTimestamp()
+                        });
+                        console.log(`[RAG V2] Vector inyectado exitosamente para ${agentName}`);
+                    }
+                } catch (embedError) {
+                    console.error('[RAG V2 Error]', embedError);
+                    // Fallamos graceful. No evitamos que se guarde en el Canvas.
+                }
+
+                // Actualización anidada en el Canvas Maestros
                 updatePayload[`${departmentId}.insights`] = FieldValue.arrayUnion({
                     id: insightId,
                     type: parsed.payload.type || 'strategy',
                     text: parsed.payload.text,
-                    _m2mSource: agentName
+                    _m2mSource: agentName,
+                    _vectorized: vectorData.length > 0
                 });
 
                 await canvasRef.update(updatePayload);
@@ -60,6 +91,7 @@ const createAgentPort = (departmentId: string, agentName: string) => {
                     status: 'COMPLETED',
                     message: `[${agentName}] Insight inyectado en ${departmentId}`,
                     insightId: insightId,
+                    vectorized: vectorData.length > 0,
                     completedAt: FieldValue.serverTimestamp()
                 });
             } else {

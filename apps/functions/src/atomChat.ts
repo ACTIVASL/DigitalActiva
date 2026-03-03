@@ -1,4 +1,5 @@
 import { onDocumentCreated } from 'firebase-functions/v2/firestore';
+import { getFirestore, FieldValue } from 'firebase-admin/firestore';
 import { defineSecret } from 'firebase-functions/params';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
@@ -37,6 +38,37 @@ export const ceoAgentV2 = onDocumentCreated({
         if (!apiKey) throw new Error("GEMINI_API_KEY_CORE no está configurada.");
 
         const genAI = new GoogleGenerativeAI(apiKey);
+
+        // --- INICIO DE RAG NATIVO (MEMORIA VECTORIAL) ---
+        let ragContext = "";
+        try {
+            console.log(`[ceoAgentV2] Iniciando Búsqueda Vectorial Nativa...`);
+            const embeddingModel = genAI.getGenerativeModel({ model: 'text-embedding-004' });
+            const embedResult = await embeddingModel.embedContent(message);
+            const queryVector = embedResult.embedding.values;
+
+            const db = getFirestore();
+            // Búsqueda de Similitud Coseno en Firestore (Zero Cost DB)
+            const vectorQuery = db.collection('m2m_memory').findNearest(
+                'embedding',
+                FieldValue.vector(queryVector),
+                { limit: 5, distanceMeasure: 'COSINE' }
+            );
+
+            const vectorDocs = await vectorQuery.get();
+            if (!vectorDocs.empty) {
+                const memories = vectorDocs.docs.map(d => {
+                    const data = d.data();
+                    return `[${data.departmentId} - ${data.sourceAgent}]: ${data.text}`;
+                });
+                ragContext = `\n\n--- MEMORIA CORPORATIVA RELEVANTE (RAG NATIVO) ---\nAquí tienes el histórico reciente de eventos en la compañía que coinciden semánticamente con la consulta del CEO:\n${memories.join('\n')}\nUtiliza este contexto para dar una respuesta fundamentada estratégicamente.`;
+                console.log(`[ceoAgentV2] RAG Exitoso. Inyectadas ${vectorDocs.size} memorias atómicas.`);
+            }
+        } catch (ragError) {
+            console.error("[ceoAgentV2] Error en RAG Vectorial (ignorando para mantener vitalidad):", ragError);
+        }
+        // --- FIN RAG NATIVO ---
+
         const model = genAI.getGenerativeModel({ model: 'gemini-2.5-pro' });
 
         const systemInstruction = `
@@ -47,6 +79,7 @@ Mantén un tono profesional, ultra-eficiente ("Dark Tech"), como un directivo de
 Nunca pidas disculpas en exceso y ve directamente al grano. 
 La arquitectura actual es 100% GCP Event-Driven Serverless (Firestore Triggers + Gemini API).
 OpenClaw y MCP erradicados. HTTP erradicado. Eres nativo en la nube por eventos.
+${ragContext}
 `;
 
         const chat = model.startChat({
