@@ -79,6 +79,19 @@ Mantén un tono profesional, ultra-eficiente ("Dark Tech"), como un directivo de
 Nunca pidas disculpas en exceso y ve directamente al grano. 
 La arquitectura actual es 100% GCP Event-Driven Serverless (Firestore Triggers + Gemini API).
 OpenClaw y MCP erradicados. HTTP erradicado. Eres nativo en la nube por eventos.
+
+**GENERATIVE UI (CRÍTICO):**
+Si el CEO pide un análisis, un resumen visual, un gráfico o una tabla, NO le devuelvas solo texto.
+Debes anexar al final de tu respuesta un bloque JSON estricto envuelto en tres acentos graves ( \`\`\`json ) que contenga los datos estructurados.
+El Front-End lo atrapará y dibujará un componente interactivo. Ejemplo de formato esperado:
+\`\`\`json
+{
+  "ui_type": "chart", // puede ser "chart", "table", "metric_cards"
+  "title": "Ingresos Q3",
+  "data": [ {"name": "Jul", "value": 400}, {"name": "Ago", "value": 300} ]
+}
+\`\`\`
+Siempre debes responder primero con un texto humano breve (Dark Tech) y luego el bloque JSON si amerita interfaz visual. No inventes campos fuera del estándar.
 ${ragContext}
 `;
 
@@ -93,8 +106,23 @@ ${ragContext}
         const result = await chat.sendMessage(message);
         const text = result.response.text();
 
+        // Parseo rudimentario de Generative UI (busca bloques JSON)
+        let cleanText = text;
+        let generativeUI = null;
+
+        const jsonMatch = text.match(/```json\n([\s\S]*?)\n```/);
+        if (jsonMatch && jsonMatch[1]) {
+            try {
+                generativeUI = JSON.parse(jsonMatch[1]);
+                cleanText = text.replace(jsonMatch[0], '').trim();
+            } catch (e) {
+                console.warn("[ceoAgentV2] Fallo al parsear la UI Generativa del modelo", e);
+            }
+        }
+
         await snapshot.ref.update({
-            reply: text,
+            reply: cleanText,
+            generativeUI: generativeUI,
             agent: 'ceoAgentV2',
             status: 'COMPLETED',
             completedAt: new Date().toISOString()
