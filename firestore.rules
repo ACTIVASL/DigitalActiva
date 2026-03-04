@@ -47,6 +47,19 @@ service cloud.firestore {
       }
     }
 
+    // --- M2M ARCHITECTURE ---
+    match /system_context/{document=**} {
+      allow read: if isAuthenticated();
+      allow write: if false; // Sólo Cloud Functions alteran el Canvas Maestro
+    }
+    match /m2m_memory/{document=**} {
+      allow read: if isAuthenticated();
+      allow write: if false; 
+    }
+    match /{collectionId}/{ticketId} {
+      allow read, write: if isAuthenticated() && collectionId.matches('^m2m_tickets_.*');
+    }
+
     // --- PATIENTS ---
     match /patients/{patientId} {
       allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
